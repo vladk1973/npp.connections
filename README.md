@@ -9,9 +9,6 @@ After installation two new buttons and two commands in menu are available:
     You can copy SQL results to clipboard, use popup menu.
 
 
-To build plugin from source:
--------------------------------
-
 ## To build "npp.connections.dll":
 
  1. Open npp.connections.dpr
