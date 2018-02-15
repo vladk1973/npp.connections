@@ -6,9 +6,7 @@
 	</a>
 </div>
 
-This plugin allows Notepad++ to connect to MS SQL or Sybase servers. ODBC data sources also supported
-npp.connections works with MS SQL data sources, that must be placed like aliases by "SQL Server Configuration Manager" tool
-Sybase servers must be placed like aliases in \Sybase\ini\sql.ini file (default configuration inifile in Sybase Client)
+This plugin allows Notepad++ to connect to MS SQL or Sybase servers. ODBC data sources also supported. Npp.connections works with MS SQL data sources, that must be placed like aliases by "SQL Server Configuration Manager" tool. Sybase servers must be placed like aliases in \Sybase\ini\sql.ini file (default configuration inifile in Sybase Client).
 After installation two new buttons and two commands in menu are available:
 <ul>
 <li><b>Show Result panel</b> - show panel with current connections and query results. Use popup menu to add active connection in left side of panel</li>
