@@ -16,6 +16,8 @@ type
 
   TItemType = (itServerMS,itServerSYB,itODBC,itBase,itBaseRTI,itLogin);
 
+  TMenuItemCheck = (miHidden,miShown);
+
   TdsPlugin = class(TNppPlugin)
   private
     { Private declarations }
@@ -51,6 +53,8 @@ const
   constDSBDCaptionArray: TBdTypeStringArray = ('Server','Server','DataSource');
   cnstErroCaption = 'Error';
   cnstNoBaseSelected = 'You must select Server and Base before executing SQL!';
+
+  cnstMainDlgId = 0;
 
 var
   NPlugin: TdsPlugin;
@@ -93,10 +97,10 @@ var
 begin
   tb.ToolbarIcon := 0;
   tb.ToolbarBmp := LoadImage(Hinstance, 'TREE', IMAGE_BITMAP, 0, 0, (LR_DEFAULTSIZE));
-  Npp_Send(NPPM_ADDTOOLBARICON, WPARAM(self.CmdIdFromDlgId(0)), LPARAM(@tb));
+  Npp_Send(NPPM_ADDTOOLBARICON, WPARAM(self.CmdIdFromDlgId(cnstMainDlgId)), LPARAM(@tb));
 
   tb.ToolbarBmp := LoadImage(Hinstance, 'SQL', IMAGE_BITMAP, 0, 0, (LR_DEFAULTSIZE));
-  Npp_Send(NPPM_ADDTOOLBARICON, WPARAM(self.CmdIdFromDlgId(1)), LPARAM(@tb));
+  Npp_Send(NPPM_ADDTOOLBARICON, WPARAM(self.CmdIdFromDlgId(cnstMainDlgId+1)), LPARAM(@tb));
 end;
 
 procedure TdsPlugin.FuncExecSQL;
@@ -105,7 +109,7 @@ var S: string;
 begin
   if not Assigned(FForm) then
   begin
-    FForm := TconnectionForm.Create(self, 0);
+    FuncLog;
     TconnectionForm(FForm).DoConnect;
   end
   else
@@ -119,7 +123,7 @@ begin
       N := Length(S);
     end;
 
-    if (N > 1) and Assigned(FForm) then
+    if N > 1 then
     begin
       TconnectionForm(FForm).DoSql(S);
     end;
@@ -128,8 +132,8 @@ end;
 
 procedure TdsPlugin.FuncLog;
 begin
-  if not Assigned(FForm) then FForm := TconnectionForm.Create(self, 0);
-  (FForm as TconnectionForm).Show;
+  if not Assigned(FForm) then FForm := TconnectionForm.Create(self, cnstMainDlgId);
+  (FForm as TconnectionForm).Carousel;
 end;
 
 end.

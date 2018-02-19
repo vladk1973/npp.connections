@@ -69,12 +69,15 @@ type
     procedure DeleteTabActionUpdate(Sender: TObject);
     procedure DeleteTabActionExecute(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
+    procedure FormHide(Sender: TObject);
   private
     msTreeView: TTreeViewEx;
     sybTreeView: TTreeViewEx;
     odbcTreeView: TTreeViewEx;
 
     FCurrentNode: TTreeNode;
+    FMenuItemCheck: TMenuItemCheck;
+    procedure SetMenuItemCheck(const Value: TMenuItemCheck);
 
     const MaxTabIndex = 10;
 
@@ -92,6 +95,8 @@ type
   public
     procedure DoSql(const SqlText: string);
     procedure DoConnect;
+    procedure Carousel;
+    property MenuItemCheck: TMenuItemCheck read FMenuItemCheck write SetMenuItemCheck;
   end;
 
 implementation
@@ -156,6 +161,17 @@ begin
     TAction(Sender).Enabled := TreeNode.ItemType in [itServerMS,itServerSYB,itODBC]
   else
     TAction(Sender).Enabled := False;
+end;
+
+procedure TconnectionForm.Carousel;
+begin
+  if MenuItemCheck  = miShown then
+    Hide
+  else
+  begin
+    Show;
+    MenuItemCheck := miShown;
+  end;
 end;
 
 procedure TconnectionForm.ConnectActionExecute(Sender: TObject);
@@ -252,7 +268,6 @@ procedure TconnectionForm.AfterSQLActionExecute(Sender: TObject);
   begin
     if Length(Value) > 3 then
     begin
-      //RefreshButton.Hint := Value;
       for i := 0 to RefreshMenu.Items.Count - 1 do
         if RefreshMenu.Items[i].Hint = Value then Exit;
 
@@ -274,8 +289,9 @@ begin
   if Obj.ErrMessage = '' then
   begin
     FillResultGrid(Obj.Grids);
-    SetItem(Obj.Description);//Добавляем пункт меню
-    Show;
+    SetItem(Obj.Description);//Add menu Item
+
+    if MenuItemCheck = miHidden then Carousel;
   end
   else
    MessageError(Obj.ErrMessage,cnstErroCaption);
@@ -322,6 +338,7 @@ end;
 procedure TconnectionForm.FormCreate(Sender: TObject);
 begin
   NppDefaultDockingMask := DWS_DF_FLOATING;
+  FMenuItemCheck := miHidden;
 
   msTreeView := TTreeViewEx.Create(Self);
   msTreeView.Parent := BasesPanel;
@@ -363,6 +380,11 @@ begin
         TabControl.Tabs.Objects[i] := nil;
       end;
     end;
+end;
+
+procedure TconnectionForm.FormHide(Sender: TObject);
+begin
+  MenuItemCheck := miHidden;
 end;
 
 procedure TconnectionForm.FillResultGrid(Results: TObjectStrings);
@@ -513,6 +535,15 @@ end;
 procedure TconnectionForm.SetCurrentNode(const Value: TTreeNode);
 begin
   FCurrentNode := Value;
+end;
+
+procedure TconnectionForm.SetMenuItemCheck(const Value: TMenuItemCheck);
+begin
+  if Value <> FMenuItemCheck then
+  begin
+    SendMessage(Npp.NppData.NppHandle, NPPM_SETMENUITEMCHECK, CmdId, LPARAM(Value));
+    FMenuItemCheck := Value;
+  end;
 end;
 
 procedure TconnectionForm.SQLActionExecute(Sender: TObject);

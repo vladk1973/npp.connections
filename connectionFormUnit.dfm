@@ -5,6 +5,7 @@ inherited connectionForm: TconnectionForm
   KeyPreview = True
   OnCreate = FormCreate
   OnDestroy = FormDestroy
+  OnHide = FormHide
   ExplicitWidth = 876
   ExplicitHeight = 663
   PixelsPerInch = 96
@@ -172,7 +173,7 @@ inherited connectionForm: TconnectionForm
     Left = 208
     Top = 64
     Bitmap = {
-      494C010116009000640110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010116009000680110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000006000000001002000000000000060
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -977,6 +978,7 @@ inherited connectionForm: TconnectionForm
         Items = <
           item
             Action = OpenListBDAction
+            Caption = '&Connections'
             ImageIndex = 13
             ShowCaption = False
           end
@@ -1023,6 +1025,7 @@ inherited connectionForm: TconnectionForm
         Items = <
           item
             Action = OpenListBDAction
+            Caption = '&Connections'
             ImageIndex = 13
             ShowCaption = False
           end
@@ -1119,7 +1122,7 @@ inherited connectionForm: TconnectionForm
     Left = 32
     Top = 552
     Bitmap = {
-      494C010106001D00440010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010106001D00480010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
