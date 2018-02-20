@@ -8,13 +8,13 @@ interface
 uses Windows;
 
 type
-  TScintillaMessageFnc = function(ptr : Pointer; Msg, wParam, lParam : LongInt) : LongInt; cdecl;
-  uptr_t = Longword;
-  sptr_t = Longint;
+  TScintillaMessageFnc = function(ptr : Pointer; Msg: UINT; wParam: WPARAM; lParam: LPARAM) : NativeInt; cdecl;
+  uptr_t = UINT_PTR;
+  sptr_t = INT_PTR;
   TNotifyHeader = record
 	  hwndFrom : Pointer;
-	  idFrom : Cardinal;
-	  code : Cardinal;
+	  idFrom   : UINT_PTR;
+	  code     : INT_PTR;
   end;
 
   PSCNotification = ^TSCNotification;
@@ -43,8 +43,8 @@ type
   end;
 
   TCharacterRange = Record
-    cpMin : LRESULT;
-	  cpMax : LRESULT;
+    cpMin : Integer;
+	  cpMax : Integer;
   end;
   PTextRange = ^TTextRange;
   TTextRange = Record
