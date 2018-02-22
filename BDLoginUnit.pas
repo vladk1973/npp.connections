@@ -47,7 +47,7 @@ type
     const cnstSrcSybase = 'SQL.INI';
     const cnstSybaseName = 'SYBASE';
     const cnstSybaseRoot = 'SYBROOT';
-    const cnstNothing = 'Пусто';
+    const cnstNothing = 'Empty list';
 
     procedure FillNothing;
     procedure FillServerListMS;

@@ -624,7 +624,7 @@ begin
   ScrollInfo.nTrackPos := FPosition;
   UpdateScrollProperties(FUpdateNeeded);
   FUpdateNeeded := False;
-  {1: Внесенные изменения}
+
   //if Code = SB_HORZ then
   FlatSB_SetScrollInfo(FControl.Handle, Code, ScrollInfo, True);
   SetPosition(FPosition);

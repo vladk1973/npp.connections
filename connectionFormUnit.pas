@@ -210,7 +210,7 @@ begin
         SqlThread.ConnectionString := TSplitView.GetConnectionString(Data);
         SqlThread.OnAfterAction := AfterAddServerAction;
         SqlThread.WinHandle := self.Handle;
-        SqlThread.Start; //Запрашивам список баз
+        SqlThread.Start; //DB List
       end;
     end;
   finally

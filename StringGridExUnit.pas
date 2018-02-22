@@ -191,7 +191,6 @@ end;
 function TStringGridEx.DoKeyUp(var Message: TWMKey): Boolean;
 var
   ShiftState: TShiftState;
-  LCharCode: Word;
 begin
   Result := True;
   with Message do
