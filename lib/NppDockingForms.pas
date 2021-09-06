@@ -151,13 +151,13 @@ begin
   GetModuleFileNameW(HInstance, self.ToolbarData.ModuleName, 1000);
   StringToWideChar(ExtractFileName(self.ToolbarData.ModuleName), self.ToolbarData.ModuleName, 1000);
   StringToWideChar('', self.ToolbarData.AdditionalInfo, 1);
-  SendMessageW(self.Npp.NppData.NppHandle, NPPM_DMMREGASDCKDLG, 0, Integer(@self.ToolbarData));
+  SendMessageW(self.Npp.NppData.NppHandle, NPPM_DMMREGASDCKDLG, 0, LPARAM(@self.ToolbarData));
 {$ELSE}
   StrCopy(self.ToolbarData.Title, PChar(self.Caption));
   GetModuleFileNameA(HInstance, self.ToolbarData.ModuleName, 1000);
   StrLCopy(self.ToolbarData.ModuleName, PChar(ExtractFileName(self.ToolbarData.ModuleName)), 1000);
   StrCopy(self.ToolbarData.AdditionalInfo, PChar(''));
-  SendMessageA(self.Npp.NppData.NppHandle, NPPM_DMMREGASDCKDLG, 0, Integer(@self.ToolbarData));
+  SendMessageA(self.Npp.NppData.NppHandle, NPPM_DMMREGASDCKDLG, 0, LPARAM(@self.ToolbarData));
 {$ENDIF}
 
   self.Visible := true;
@@ -210,10 +210,10 @@ procedure TNppDockingForm.UpdateDisplayInfo(Info: String);
 begin
 {$IFDEF NPPUNICODE}
   StringToWideChar(Info, self.ToolbarData.AdditionalInfo, 1000);
-  SendMessageW(self.Npp.NppData.NppHandle, NPPM_DMMUPDATEDISPINFO, 0, self.Handle);
+  SendMessageW(self.Npp.NppData.NppHandle, NPPM_DMMUPDATEDISPINFO, 0, LPARAM(self.Handle));
 {$ELSE}
   StrLCopy(self.ToolbarData.AdditionalInfo, PChar(Info), 1000);
-  SendMessageA(self.Npp.NppData.NppHandle, NPPM_DMMUPDATEDISPINFO, 0, self.Handle);
+  SendMessageA(self.Npp.NppData.NppHandle, NPPM_DMMUPDATEDISPINFO, 0, LPARAM(self.Handle));
 {$ENDIF}
 end;
 

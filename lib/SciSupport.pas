@@ -1284,6 +1284,8 @@ const
     SCN_SCROLLED            = 2080;
     SCN_FOLDINGSTATECHANGED = 2081;
 
+    SCI_AUTOCGETCURRENTTEXT = 2610;
+
 //--Const
 
 implementation

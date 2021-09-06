@@ -528,13 +528,14 @@ type
     procedure DoNppnToolbarModification; virtual;
 
 
-    function SelectedText: nppString;
-    function GetText: nppString;
   public
     NppData: TNppData;
     constructor Create;
     destructor Destroy; override;
     procedure BeforeDestruction; override;
+
+    function SelectedText: nppString;
+    function GetText: nppString;
 
     function CmdIdFromDlgId(DlgId: Integer): Integer;
     function Sci_Send(Msg: UINT; wParam: WPARAM; lParam: LPARAM): LRESULT;
@@ -739,11 +740,16 @@ begin
 
   if (HWND(sn^.nmhdr.hwndFrom) = ScintillaHandle)
     and (sn^.nmhdr.code = SCN_CHARADDED) then
-    if sn^.ch <> 0 then DoNppnCharAdded(sn^.ch);
+  begin
+    if sn^.ch <> 0 then DoNppnCharAdded(sn^.ch)
+    else
+    if sn^.modifiers <> 0 then DoNppnCharAdded(sn^.modifiers)
+  end;
 
   if (HWND(sn^.nmhdr.hwndFrom) = ScintillaHandle)
     and (sn^.nmhdr.code = SCN_AUTOCSELECTION) then
       DoNppnUpdateAutoSelection(sn^.text);
+
 end;
 
 procedure TNppPlugin.MessageProc(var Msg: TMessage);
