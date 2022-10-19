@@ -67,14 +67,14 @@ implementation
 //ODBC
 
 
-function SQLDataSources(EnvironmentHandle:LongWord;Direction:Smallint;
+function SQLDataSources(EnvironmentHandle:Pointer;Direction:Smallint;
     ServerName:PAnsiChar;BufferLength1:Smallint;NameLength1Ptr:PSmallInt;
     Description:PAnsiChar;BufferLength2:Smallint;NameLength2Ptr:PSmallInt): Smallint; stdcall; external 'odbc32.dll';
 function SQLAllocHandle(HandleType:Smallint;InputHandle:Smallint;
     OutputHandlePtr:Pointer): Smallint; stdcall; external 'odbc32.dll';
-function SQLSetEnvAttr(EnvironmentHandle:LongWord;Attribute:Integer;
+function SQLSetEnvAttr(EnvironmentHandle:Pointer;Attribute:Integer;
     ValuePtr:Pointer;StringLength:Integer): Smallint; stdcall; external 'odbc32.dll';
-function SQLFreeHandle(HandleType:Smallint;Handle:LongWord): Smallint; stdcall; external 'odbc32.dll';
+function SQLFreeHandle(HandleType:Smallint;Handle:Pointer): Smallint; stdcall; external 'odbc32.dll';
 function SQLAllocEnv(var phenv: Pointer):Smallint; stdcall; external 'odbc32.dll';
 
 function SQLAllocConnect(henv: Pointer;var phdbc: Pointer):Smallint; stdcall; external 'odbc32.dll';
@@ -97,14 +97,14 @@ var
   datasrc,descrip:array [0..MAX_BUF-1] of AnsiChar;
   direction:Smallint;
   rdsrc,rdesc:SmallInt;
-  hEnv:Cardinal;
+  hEnv:Pointer;
 begin
   rdsrc:=0;
   rdesc:=0;
   datasrc[0]:=#0;
   descrip[0]:=#0;
   SQLAllocHandle(SQL_HANDLE_ENV, SQL_NULL_HENV, @hEnv);
-  SQLSetEnvAttr(hEnv, SQL_ATTR_ODBC_VERSION,POINTER(SQL_OV_ODBC3),SQL_IS_INTEGER);
+  SQLSetEnvAttr(hEnv, SQL_ATTR_ODBC_VERSION,Pointer(SQL_OV_ODBC3),SQL_IS_INTEGER);
   direction:=SQL_FETCH_FIRST;
   Strings.Clear;
   while (SQLDataSources(hEnv,direction,@datasrc[0],MAX_BUF,@rdsrc,@descrip[0],MAX_BUF,@rdesc)<>SQL_NO_DATA) do
