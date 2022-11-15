@@ -22,8 +22,8 @@ unit nppplugin;
 interface
 
 uses
-  Winapi.Windows,Winapi.Messages,System.SysUtils, {Dialogs,}
-  Vcl.Forms,Classes, SciSupport;
+  Winapi.Windows,Winapi.Messages,System.SysUtils,  System.UITypes, Dialogs,
+  Vcl.Forms, Classes, SciSupport;
 
 const
   FuncItemNameLen=64;
@@ -250,6 +250,129 @@ const
 	// Return: current edit view of Notepad++. Only 2 possible values: 0 = Main, 1 = Secondary
 
 
+  NPPM_DOCLISTDISABLEEXTCOLUMN = (NOTEPADPLUS_USER + 89);
+  // VOID NPPM_DOCLISTDISABLEEXTCOLUMN(0, BOOL disableOrNot);
+  // Disable or enable extension column of Document List
+  NPPM_DOCLISTDISABLEPATHCOLUMN = (NOTEPADPLUS_USER + 102);
+  // VOID NPPM_DOCLISTDISABLEPATHCOLUMN(0, BOOL disableOrNot);
+  // Disable or enable path column of Document List
+  NPPM_GETEDITORDEFAULTFOREGROUNDCOLOR = (NOTEPADPLUS_USER + 90);
+  // INT NPPM_GETEDITORDEFAULTFOREGROUNDCOLOR(0, 0);
+  // Return: current editor default foreground color. You should convert the returned value in COLORREF
+  NPPM_GETEDITORDEFAULTBACKGROUNDCOLOR = (NOTEPADPLUS_USER + 91);
+  // INT NPPM_GETEDITORDEFAULTBACKGROUNDCOLOR(0, 0);
+  // Return: current editor default background color. You should convert the returned value in COLORREF
+  NPPM_SETSMOOTHFONT = (NOTEPADPLUS_USER + 92);
+  // VOID NPPM_SETSMOOTHFONT(0, BOOL setSmoothFontOrNot);
+  NPPM_SETEDITORBORDEREDGE = (NOTEPADPLUS_USER + 93);
+  // VOID NPPM_SETEDITORBORDEREDGE(0, BOOL withEditorBorderEdgeOrNot);
+  NPPM_SAVEFILE = (NOTEPADPLUS_USER + 94);
+  // VOID NPPM_SAVEFILE(0, const TCHAR *fileNameToSave);
+  NPPM_DISABLEAUTOUPDATE = (NOTEPADPLUS_USER + 95); // 2119 in decimal
+  // VOID NPPM_DISABLEAUTOUPDATE(0, 0);
+  NPPM_REMOVESHORTCUTBYCMDID = (NOTEPADPLUS_USER + 96); // 2120 in decimal
+  // BOOL NPPM_REMOVESHORTCUTASSIGNMENT(int cmdID);
+  // removes the assigned shortcut mapped to cmdID
+  // returned value : TRUE if function call is successful, otherwise FALSE
+  NPPM_GETPLUGINHOMEPATH = (NOTEPADPLUS_USER + 97);
+  // INT NPPM_GETPLUGINHOMEPATH(size_t strLen, TCHAR *pluginRootPath);
+  // Get plugin home root path. It's useful if plugins want to get its own path
+  // by appending <pluginFolderName> which is the name of plugin without extension part.
+  // Returns the number of TCHAR copied/to copy.
+  // Users should call it with pluginRootPath be NULL to get the required number of TCHAR = (not including the terminating nul character);,
+  // allocate pluginRootPath buffer with the return value + 1, then call it again to get the path.
+  NPPM_GETSETTINGSONCLOUDPATH = (NOTEPADPLUS_USER + 98);
+  // INT NPPM_GETSETTINGSCLOUDPATH(size_t strLen, TCHAR *settingsOnCloudPath);
+  // Get settings on cloud path. It's useful if plugins want to store its settings on Cloud, if this path is set.
+  // Returns the number of TCHAR copied/to copy. If the return value is 0, then this path is not set, or the "strLen" is not enough to copy the path.
+  // Users should call it with settingsCloudPath be NULL to get the required number of TCHAR = (not including the terminating nul character);,
+  // allocate settingsCloudPath buffer with the return value + 1, then call it again to get the path.
+  NPPM_SETLINENUMBERWIDTHMODE = (NOTEPADPLUS_USER + 99);
+  LINENUMWIDTH_DYNAMIC     = 0;
+  LINENUMWIDTH_CONSTANT    = 1;
+  // BOOL NPPM_SETLINENUMBERWIDTHMODE(0, INT widthMode);
+  // Set line number margin width in dynamic width mode = (LINENUMWIDTH_DYNAMIC); or constant width mode = (LINENUMWIDTH_CONSTANT);
+  // It may help some plugins to disable non-dynamic line number margins width to have a smoothly visual effect while vertical scrolling the content in Notepad++
+  // If calling is successful return TRUE, otherwise return FALSE.
+  NPPM_GETLINENUMBERWIDTHMODE = (NOTEPADPLUS_USER + 100);
+  // INT NPPM_GETLINENUMBERWIDTHMODE(0, 0);
+  // Get line number margin width in dynamic width mode = (LINENUMWIDTH_DYNAMIC); or constant width mode = (LINENUMWIDTH_CONSTANT);
+  NPPM_ADDTOOLBARICON_FORDARKMODE = (NOTEPADPLUS_USER + 101);
+  // VOID NPPM_ADDTOOLBARICON_FORDARKMODE(UINT funcItem[X]._cmdID, toolbarIconsWithDarkMode iconHandles);
+  // Use NPPM_ADDTOOLBARICON_FORDARKMODE instead obsolete NPPM_ADDTOOLBARICON which doesn't support the dark mode
+  // since 8.0
+  // https://community.notepad-plus-plus.org/topic/21652/add-new-api-nppm_addtoolbaricon_fordarkmode-for-dark-mode
+  NPPM_GETEXTERNALLEXERAUTOINDENTMODE = (NOTEPADPLUS_USER + 103);
+  // BOOL NPPM_GETEXTERNALLEXERAUTOINDENTMODE(const TCHAR *languageName, ExternalLexerAutoIndentMode &autoIndentMode);
+  // Get ExternalLexerAutoIndentMode for an installed external programming language.
+  // - Standard means Notepad++ will keep the same TAB indentation between lines;
+  // - C_Like means Notepad++ will perform a C-Language style indentation for the selected external language;
+  // - Custom means a Plugin will be controlling auto-indentation for the current language.
+  // returned values: TRUE for successful searches, otherwise FALSE.
+  NPPM_SETEXTERNALLEXERAUTOINDENTMODE = (NOTEPADPLUS_USER + 104);
+  // BOOL NPPM_SETEXTERNALLEXERAUTOINDENTMODE(const TCHAR *languageName, ExternalLexerAutoIndentMode autoIndentMode);
+  // Set ExternalLexerAutoIndentMode for an installed external programming language.
+  // - Standard means Notepad++ will keep the same TAB indentation between lines;
+  // - C_Like means Notepad++ will perform a C-Language style indentation for the selected external language;
+  // - Custom means a Plugin will be controlling auto-indentation for the current language.
+  // returned value: TRUE if function call was successful, otherwise FALSE.
+  NPPM_ISAUTOINDENTON = (NOTEPADPLUS_USER + 105);
+  // BOOL NPPM_ISAUTOINDENTON(0, 0);
+  // Returns the current Use Auto-Indentation setting in Notepad++ Preferences.
+  NPPM_GETCURRENTMACROSTATUS = (NOTEPADPLUS_USER + 106);
+  // MacroStatus NPPM_GETCURRENTMACROSTATUS(0, 0);
+  // Gets current enum class MacroStatus { Idle - means macro is not in use and it's empty, RecordInProgress, RecordingStopped, PlayingBack }
+  NPPM_ISDARKMODEENABLED = (NOTEPADPLUS_USER + 107);
+  // bool NPPM_ISDARKMODEENABLED(0, 0)
+  // Returns true when Notepad++ Dark Mode is enable, false when it is not.
+  // since 8.4.1
+  // https://github.com/notepad-plus-plus/notepad-plus-plus/commit/1eb5b10e41d7ab92b60aa32b28d4fe7739d15b53
+  NPPM_GETDARKMODECOLORS = (NOTEPADPLUS_USER + 108);
+  // bool NPPM_GETDARKMODECOLORS (size_t cbSize, NppDarkMode::Colors* returnColors)
+  // - cbSize must be filled with sizeof(NppDarkMode::Colors).
+  // - returnColors must be a pre-allocated NppDarkMode::Colors struct.
+  // Returns true when successful, false otherwise.
+  // You need to uncomment the following code to use NppDarkMode::Colors structure:
+  //
+  // namespace NppDarkMode
+  // {
+  //  struct Colors
+  //  {
+  //    COLORREF background = 0;
+  //    COLORREF softerBackground = 0;
+  //    COLORREF hotBackground = 0;
+  //    COLORREF pureBackground = 0;
+  //    COLORREF errorBackground = 0;
+  //    COLORREF text = 0;
+  //    COLORREF darkerText = 0;
+  //    COLORREF disabledText = 0;
+  //    COLORREF linkText = 0;
+  //    COLORREF edge = 0;
+  //    COLORREF hotEdge = 0;
+  //    COLORREF disabledEdge = 0;
+  //  };
+  // }
+  //
+
+
+  // Note: in the case of calling failure ("false" is returned), you may need to change NppDarkMode::Colors structure to:
+  // https://github.com/notepad-plus-plus/notepad-plus-plus/blob/master/PowerEditor/src/NppDarkMode.h#L32
+  // since 8.4.1
+  // https://github.com/notepad-plus-plus/notepad-plus-plus/commit/1eb5b10e41d7ab92b60aa32b28d4fe7739d15b53
+  NPPM_GETCURRENTCMDLINE = (NOTEPADPLUS_USER + 109);
+  // INT NPPM_GETCURRENTCMDLINE(size_t strLen, TCHAR *commandLineStr)
+  // Get the Current Command Line string.
+  // Returns the number of TCHAR copied/to copy.
+  // Users should call it with commandLineStr as NULL to get the required number of TCHAR (not including the terminating nul character),
+  // allocate commandLineStr buffer with the return value + 1, then call it again to get the current command line string.
+  // since 8.4.2
+  // https://github.com/notepad-plus-plus/notepad-plus-plus/commit/0f8d5724afb0a540e8b4024252945ab60bc88c71
+  NPPM_CREATELEXER = (NOTEPADPLUS_USER + 110);
+  // void* NPPN_CREATELEXER(0, const TCHAR *lexer_name)
+  // Returns the ILexer pointer created by Lexilla
+  // since 8.4.3
+  // https://github.com/notepad-plus-plus/notepad-plus-plus/commit/f1ed4de78dbe8f5d85f4d199bae2970148cca8ed
+
   // Notification code
   NPPN_FIRST = 1000;
   NPPN_READY = (NPPN_FIRST + 1);
@@ -357,24 +480,75 @@ const
 		// where bufferID is BufferID
 		//       docStatus can be combined by DOCSTAUS_READONLY and DOCSTAUS_BUFFERDIRTY
 
+  DOCSTATUS_READONLY = 1;
+  DOCSTATUS_BUFFERDIRTY = 2;
+  NPPN_DOCORDERCHANGED = (NPPN_FIRST + 17);  // To notify plugins that document order is changed
+  //scnNotification->nmhdr.code = NPPN_DOCORDERCHANGED;
+  //scnNotification->nmhdr.hwndFrom = newIndex;
+  //scnNotification->nmhdr.idFrom = BufferID;
+
+  NPPN_SNAPSHOTDIRTYFILELOADED = (NPPN_FIRST + 18);  // To notify plugins that a snapshot dirty file is loaded on startup
+  //scnNotification->nmhdr.code = NPPN_SNAPSHOTDIRTYFILELOADED;
+  //scnNotification->nmhdr.hwndFrom = NULL;
+  //scnNotification->nmhdr.idFrom = BufferID;
+  NPPN_BEFORESHUTDOWN = (NPPN_FIRST + 19);  // To notify plugins that Npp shutdown has been triggered, files have not been closed yet
+  //scnNotification->nmhdr.code = NPPN_BEFORESHUTDOWN;
+  //scnNotification->nmhdr.hwndFrom = hwndNpp;
+  //scnNotification->nmhdr.idFrom = 0;
+  NPPN_CANCELSHUTDOWN = (NPPN_FIRST + 20);  // To notify plugins that Npp shutdown has been cancelled
+  //scnNotification->nmhdr.code = NPPN_CANCELSHUTDOWN;
+  //scnNotification->nmhdr.hwndFrom = hwndNpp;
+  //scnNotification->nmhdr.idFrom = 0;
+  NPPN_FILEBEFORERENAME = (NPPN_FIRST + 21);  // To notify plugins that file is to be renamed
+  //scnNotification->nmhdr.code = NPPN_FILEBEFORERENAME;
+  //scnNotification->nmhdr.hwndFrom = hwndNpp;
+  //scnNotification->nmhdr.idFrom = BufferID;
+  NPPN_FILERENAMECANCEL = (NPPN_FIRST + 22);  // To notify plugins that file rename has been cancelled
+  //scnNotification->nmhdr.code = NPPN_FILERENAMECANCEL;
+  //scnNotification->nmhdr.hwndFrom = hwndNpp;
+  //scnNotification->nmhdr.idFrom = BufferID;
+  NPPN_FILERENAMED = (NPPN_FIRST + 23);  // To notify plugins that file has been renamed
+  //scnNotification->nmhdr.code = NPPN_FILERENAMED;
+  //scnNotification->nmhdr.hwndFrom = hwndNpp;
+  //scnNotification->nmhdr.idFrom = BufferID;
+  NPPN_FILEBEFOREDELETE = (NPPN_FIRST + 24);  // To notify plugins that file is to be deleted
+  //scnNotification->nmhdr.code = NPPN_FILEBEFOREDELETE;
+  //scnNotification->nmhdr.hwndFrom = hwndNpp;
+  //scnNotification->nmhdr.idFrom = BufferID;
+  NPPN_FILEDELETEFAILED = (NPPN_FIRST + 25);  // To notify plugins that file deletion has failed
+  //scnNotification->nmhdr.code = NPPN_FILEDELETEFAILED;
+  //scnNotification->nmhdr.hwndFrom = hwndNpp;
+  //scnNotification->nmhdr.idFrom = BufferID;
+  NPPN_FILEDELETED = (NPPN_FIRST + 26);  // To notify plugins that file has been deleted
+  //scnNotification->nmhdr.code = NPPN_FILEDELETED;
+  //scnNotification->nmhdr.hwndFrom = hwndNpp;
+  //scnNotification->nmhdr.idFrom = BufferID;
+  NPPN_DARKMODECHANGED = (NPPN_FIRST + 27); // To notify plugins that Dark Mode was enabled/disabled
+  //scnNotification->nmhdr.code = NPPN_DARKMODECHANGED;
+  //scnNotification->nmhdr.hwndFrom = hwndNpp;
+  //scnNotification->nmhdr.idFrom = 0;
+  NPPN_CMDLINEPLUGINMSG = (NPPN_FIRST + 28);  // To notify plugins that the new argument for plugins (via '-pluginMessage="YOUR_PLUGIN_ARGUMENT"' in command line) is available
+  //scnNotification->nmhdr.code = NPPN_CMDLINEPLUGINMSG;
+  //scnNotification->nmhdr.hwndFrom = hwndNpp;
+  //scnNotification->nmhdr.idFrom = pluginMessage; //where pluginMessage is pointer of type wchar_t
+
 	DOCSTAUS_READONLY = 1;
 	DOCSTAUS_BUFFERDIRTY = 2;
 
-	NPPN_DOCORDERCHANGED = (NPPN_FIRST + 16);
-  // To notify plugins that document order is changed
-	//scnNotification->nmhdr.code = NPPN_DOCORDERCHANGED;
-	//scnNotification->nmhdr.hwndFrom = newIndex;
-	//scnNotification->nmhdr.idFrom = BufferID;
-
-  RUNCOMMAND_USER    = (WM_USER + 3000);
-    VAR_NOT_RECOGNIZED = 0;
-    FULL_CURRENT_PATH = 1;
-    CURRENT_DIRECTORY = 2;
-    FILE_NAME = 3;
-    NAME_PART = 4;
-    EXT_PART = 5;
-    CURRENT_WORD = 6;
-    NPP_DIRECTORY = 7;
+  VAR_NOT_RECOGNIZED = 0;
+  FULL_CURRENT_PATH = 1;
+  CURRENT_DIRECTORY = 2;
+  FILE_NAME = 3;
+  NAME_PART = 4;
+  EXT_PART = 5;
+  CURRENT_WORD = 6;
+  NPP_DIRECTORY = 7;
+  CURRENT_LINE = 8;
+  CURRENT_COLUMN = 9;
+  NPP_FULL_FILE_PATH = 10;
+  GETFILENAMEATCURSOR = 11;
+  CURRENT_LINESTR = 12;
+  RUNCOMMAND_USER = (WM_USER + 3000);
   NPPM_GETFULLCURRENTPATH = (RUNCOMMAND_USER + FULL_CURRENT_PATH);
   NPPM_GETCURRENTDIRECTORY = (RUNCOMMAND_USER + CURRENT_DIRECTORY);
   NPPM_GETFILENAME = (RUNCOMMAND_USER + FILE_NAME);
@@ -382,11 +556,24 @@ const
   NPPM_GETEXTPART = (RUNCOMMAND_USER + EXT_PART);
   NPPM_GETCURRENTWORD = (RUNCOMMAND_USER + CURRENT_WORD);
   NPPM_GETNPPDIRECTORY = (RUNCOMMAND_USER + NPP_DIRECTORY);
+  NPPM_GETFILENAMEATCURSOR = (RUNCOMMAND_USER + GETFILENAMEATCURSOR);
+  NPPM_GETCURRENTLINESTR = (RUNCOMMAND_USER + CURRENT_LINESTR);
+  // BOOL NPPM_GETXXXXXXXXXXXXXXXX(size_t strLen, TCHAR *str);
+  // where str is the allocated TCHAR array,
+  //       strLen is the allocated array size
+  // The return value is TRUE when get generic_string operation success
+  // Otherwise = (allocated array size is too small); FALSE
+  NPPM_GETCURRENTLINE = (RUNCOMMAND_USER + CURRENT_LINE);
+  // INT NPPM_GETCURRENTLINE(0, 0);
+  // return the caret current position line
+  NPPM_GETCURRENTCOLUMN = (RUNCOMMAND_USER + CURRENT_COLUMN);
+  // INT NPPM_GETCURRENTCOLUMN(0, 0);
+  // return the caret current position column
+  NPPM_GETNPPFULLFILEPATH = (RUNCOMMAND_USER + NPP_FULL_FILE_PATH);
 
   MACRO_USER    = (WM_USER + 4000);
   WM_ISCURRENTMACRORECORDED = (MACRO_USER + 01);
   WM_MACRODLGRUNMACRO       = (MACRO_USER + 02);
-
 
 { Humm.. is tis npp specific? }
   SCINTILLA_USER = (WM_USER + 2000);
@@ -462,8 +649,45 @@ type
     ToolbarIcon: HICON;
   end;
 
+  // 2 formats / 3 icons are needed:  1 * BMP + 2 * ICO
+  // All 3 handles below should be set so the icon will be displayed correctly if toolbar icon sets are changed by users, also in dark mode
+  TTbIconsDarkMode = record
+    ToolbarBmp: HBITMAP;
+    ToolbarIcon: HICON;
+    ToolbarIconDarkMode: HICON;
+  end;
+
+
+  TNppDarkModeColors_ver8 = record
+    background: COLORREF;
+    softerBackground: COLORREF;
+    hotBackground: COLORREF;
+    pureBackground: COLORREF;
+    errorBackground: COLORREF;
+    text: COLORREF;
+    darkerText: COLORREF;
+    disabledText: COLORREF;
+    linkText: COLORREF;
+    edge: COLORREF;
+  end;
+
+  TNppDarkModeColors = record
+    background: COLORREF;
+    softerBackground: COLORREF;
+    hotBackground: COLORREF;
+    pureBackground: COLORREF;
+    errorBackground: COLORREF;
+    text: COLORREF;
+    darkerText: COLORREF;
+    disabledText: COLORREF;
+    linkText: COLORREF;
+    edge: COLORREF;
+    hotEdge: COLORREF;
+    disabledEdge: COLORREF;
+  end;
+
   TCommunicationInfo = record
-    internalMsg: Cardinal;
+    internalMsg: NativeUInt;
     srcModuleName: nppPChar;
     info: Pointer;
   end;
@@ -520,26 +744,35 @@ type
     procedure ClientWndProcSubView(var Message: TMessage);
 
   protected
-    PluginName: nppString;
+    function GetNppVersion: Cardinal;
     function AddFuncItem(Name: nppString; Func: PFUNCPLUGINCMD): Integer; overload;
     function AddFuncItem(Name: nppString; Func: PFUNCPLUGINCMD; ShortcutKey: TShortcutKey): Integer; overload;
 
     procedure ClientWndProc(var Message: TMessage);virtual;
     procedure DoNppnToolbarModification; virtual;
 
-
   public
+    PluginName: nppString;
+
     NppData: TNppData;
     constructor Create;
     destructor Destroy; override;
     procedure BeforeDestruction; override;
 
-    function SelectedText: nppString;
-    function GetText: nppString;
+    function CurrentLine: LRESULT;
+    function CurrentPos: LRESULT;
+    function SelectedText: AnsiString;
+    function GetText: AnsiString;
+    function GetTextLength: Integer;
+    function GetLineCount: Integer;
+    function GetLine(const Line: Integer): AnsiString;
 
     function CmdIdFromDlgId(DlgId: Integer): Integer;
     function Sci_Send(Msg: UINT; wParam: WPARAM; lParam: LPARAM): LRESULT;
     function Npp_Send(Msg: UINT; wParam: WPARAM; lParam: LPARAM): LRESULT;
+
+    function GetTextRange(Range: TCharacterRange): AnsiString;
+    procedure FuncInsertText(const S: AnsiString);
 
     // needed for DLL export.. wrappers are in the main dll file.
     procedure SetInfo(NppData: TNppData); virtual;
@@ -558,6 +791,7 @@ type
     procedure DoNppnUpdateHScroll; virtual;
     procedure DoNppnCharAdded(const ASCIIKey: Integer); virtual;
     procedure DoNppnUpdateAutoSelection(P: PAnsiChar);virtual;
+    procedure DoChangePluginTheme; virtual;
     // df
     function DoOpen(filename: string): boolean; overload;
     function DoOpen(filename: string; Line: Integer): boolean; overload;
@@ -572,6 +806,7 @@ type
     function UnRegisterAsDialog(WindowHandle: HWND): Integer;
 
     function ScintillaHandle: HWND;
+    function HasV5Apis: Boolean; // needs N++ 8.4 or later
 
     property PluginsConfigDir: string read GetPluginsConfigDir;
   end;
@@ -716,6 +951,11 @@ begin
     self.DoNppnToolbarModification;
   end;
 
+  if (HWND(sn^.nmhdr.hwndFrom) = self.NppData.NppHandle) and (sn^.nmhdr.code = NPPN_DARKMODECHANGED) then
+  begin
+    self.DoChangePluginTheme;
+  end;
+
   if (HWND(sn^.nmhdr.hwndFrom) = self.NppData.NppHandle)
     and (sn^.nmhdr.code = NPPN_BUFFERACTIVATED) then
   begin
@@ -779,36 +1019,114 @@ begin
   Result := SendMessage(ScintillaHandle, Msg, wParam, lParam);
 end;
 
-function TNppPlugin.SelectedText: nppString;
-var Size: NativeInt;
-    S: AnsiString;
+function TNppPlugin.GetLine(const Line: Integer): AnsiString;
+var
+  Size: Integer;
+  S: AnsiString;
 begin
-  Result := '';
-  Size := Sci_Send(SCI_GETSELTEXT, 0, 0);
+  Size := Sci_Send(SCI_LINELENGTH,WPARAM(Line),0);
+  if HasV5Apis then Inc(Size);
   SetLength(S,Size);
   try
-    Sci_Send(SCI_GETSELTEXT, 0, LPARAM(PAnsiChar(S)));
-    SetLength(S,Size-1);
-    Result := UTF8Decode(S);
+    Size :=Sci_Send(SCI_GETLINE,WPARAM(Line),LPARAM(PAnsiChar(S)));
+    Result := S;
   finally
     SetLength(S,0);
   end;
 end;
 
-function TNppPlugin.GetText: nppString;
+function TNppPlugin.GetTextRange(Range: TCharacterRange): AnsiString;
+var pt: PTextRange; //¬озвращает текст внутри переданного диапазона
+    Size,StartSize: NativeInt;
+    S: AnsiString;
+begin
+  StartSize := (Range.cpMax - Range.cpMin)+1;
+  GetMem(pt,SizeOf(TTextRange));
+  GetMem(pt^.lpstrText,StartSize);
+  try
+    pt^.chrg := Range;
+    Size :=Sci_Send(SCI_GETTEXTRANGEFULL,0,LPARAM(pt));
+    if HasV5Apis then Inc(Size);
+    SetLength(S,Size);
+    StrLCopy(PAnsiChar(S),pt^.lpstrText,Size);
+  finally
+    FreeMem(pt^.lpstrText,StartSize);
+    FreeMem(pt,SizeOf(TTextRange));
+    Result := S;
+  end;
+end;
+
+procedure TNppPlugin.FuncInsertText(const S: AnsiString);
+var
+  S1: AnsiString;
+  S2: AnsiString;
+begin
+  S1 := SelectedText;
+  S2 := UTF8Encode(Format(S,[S1]));
+  Sci_Send(SCI_REPLACESEL, 0, LPARAM(nppPChar(S2)));
+end;
+
+function TNppPlugin.SelectedText: AnsiString;
 var Size: NativeInt;
     S: AnsiString;
 begin
   Result := '';
-  Size := Sci_Send(SCI_GETLENGTH, 0, 0);
-  Inc(Size);
-  SetLength(S,Size);
-  try
-    Sci_Send(SCI_GETTEXT, Size, LPARAM(PAnsiChar(S)));
-    Result := UTF8Decode(S);
-  finally
-    SetLength(S,0);
+  Size := Sci_Send(SCI_GETSELTEXT, 0, 0);
+  if Size>0 then
+  begin
+    SetLength(S,Size);
+    try
+      Sci_Send(SCI_GETSELTEXT, 0, LPARAM(nppPChar(S)));
+      if not HasV5Apis then
+        SetLength(S,Size-1);
+      Result := UTF8Decode(S);
+    finally
+      SetLength(S,0);
+    end;
   end;
+end;
+
+function TNppPlugin.GetText: AnsiString;
+var Size: NativeInt;
+    S: AnsiString;
+begin
+  Result := '';
+  Size := GetTextLength;
+  if not HasV5Apis then
+    Inc(Size);
+  if Size>0 then
+  begin
+    SetLength(S,Size);
+    try
+      Sci_Send(SCI_GETTEXT, Size, LPARAM(PAnsiChar(S)));
+      Result := UTF8Decode(S);
+    finally
+      SetLength(S,0);
+    end;
+  end;
+end;
+
+function TNppPlugin.CurrentLine: LRESULT;
+var
+  iPos: Integer;
+begin
+  iPos := CurrentPos;
+  Result := Sci_Send(SCI_LINEFROMPOSITION, WPARAM(iPos), 0);
+end;
+
+function TNppPlugin.CurrentPos: LRESULT;
+begin
+  Result := Sci_Send(SCI_GETCURRENTPOS, 0, 0);
+end;
+
+function TNppPlugin.GetTextLength: Integer;
+begin
+  Result := Sci_Send(SCI_GETLENGTH, 0, 0);
+end;
+
+function TNppPlugin.GetLineCount: Integer;
+begin
+  Result := Sci_Send(SCI_GETLINECOUNT, 0, 0);
 end;
 
 procedure TNppPlugin.SetInfo(NppData: TNppData);
@@ -827,6 +1145,34 @@ begin
   SetLength(s, MAX_PATH);
   Npp_Send(NPPM_GETCURRENTWORD,0,LPARAM(nppPChar(s)));
   Result := CharToString(s);
+end;
+
+function TNppPlugin.GetNppVersion: Cardinal;
+var
+  NppVersion: Cardinal;
+begin
+  NppVersion := Npp_Send(NPPM_GETNPPVERSION, 0, 0);
+  // retrieve the zero-padded version, if available
+  // https://github.com/notepad-plus-plus/notepad-plus-plus/commit/ef609c896f209ecffd8130c3e3327ca8a8157e72
+  if ((HIWORD(NppVersion) > 8) or
+      ((HIWORD(NppVersion) = 8) and
+        (((LOWORD(NppVersion) >= 41) and (not (LOWORD(NppVersion) in [191, 192, 193]))) or
+          (LOWORD(NppVersion) in [5, 6, 7, 8, 9])))) then
+    NppVersion := Npp_Send(NPPM_GETNPPVERSION, 1, 0);
+
+  Result := NppVersion;
+end;
+
+function TNppPlugin.HasV5Apis: Boolean;
+var
+  NppVersion: Cardinal;
+begin
+  NppVersion := GetNppVersion;
+  Result :=
+    (HIWORD(NppVersion) > 8) or
+    ((HIWORD(NppVersion) = 8) and
+        ((LOWORD(NppVersion) >= 4) and
+           (not (LOWORD(NppVersion) in [11, 12, 13, 14, 15, 16, 17, 18, 19, 21, 31, 32, 33, 191, 192, 193]))));
 end;
 
 function TNppPlugin.CheckDocStatus: string;
@@ -900,6 +1246,11 @@ begin
 end;
 
 procedure TNppPlugin.DoNppnUpdateVScroll;
+begin
+  //do nothing for this plugin
+end;
+
+procedure TNppPlugin.DoChangePluginTheme;
 begin
   //do nothing for this plugin
 end;

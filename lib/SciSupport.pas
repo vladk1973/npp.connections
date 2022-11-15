@@ -43,8 +43,8 @@ type
   end;
 
   TCharacterRange = Record
-    cpMin : Integer;
-	  cpMax : Integer;
+    cpMin : NativeInt;
+	  cpMax : NativeInt;
   end;
   PTextRange = ^TTextRange;
   TTextRange = Record
@@ -61,6 +61,9 @@ type
 const
 //++Const -- start of section automatically generated from Scintilla.iface
     INVALID_POSITION = -1;
+
+    SCI_GETTECHNOLOGY = 2631;
+
     SCI_START = 2000;
     SCI_OPTIONAL_START = 3000;
     SCI_LEXER_START = 4000;
@@ -329,6 +332,7 @@ const
     SCI_SETSEL = 2160;
     SCI_GETSELTEXT = 2161;
     SCI_GETTEXTRANGE = 2162;
+    SCI_GETTEXTRANGEFULL = 2039;
     SCI_HIDESELECTION = 2163;
     SCI_POINTXFROMPOSITION = 2164;
     SCI_POINTYFROMPOSITION = 2165;
