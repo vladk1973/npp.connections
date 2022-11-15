@@ -4,7 +4,7 @@ interface
 
 uses
   Winapi.Windows, System.SysUtils, System.Classes, System.Contnrs,
-  System.Win.ComObj, Vcl.Grids, StringGridExUnit;
+  System.Win.ComObj, Vcl.Grids, Graphics, StringGridExUnit;
 
 type
   TObjectStrings = class(TObjectList)

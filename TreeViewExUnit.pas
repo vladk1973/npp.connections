@@ -4,21 +4,26 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.StdCtrls, Vcl.ComCtrls, Data.Db, Vcl.ExtCtrls,
-  plugin;
+  Vcl.Controls, Vcl.Forms, Vcl.StdCtrls, Vcl.ComCtrls, ConstUnit, Data.Db,
+  Vcl.Dialogs, Vcl.ExtCtrls;
 
 type
 
   TTreeNodeEx = class(TTreeNode)
   private
     FDataSource: string;
+    FTableList: TStringList;
   public
+    constructor Create(AOwner: TTreeNodes); override;
+    destructor Destroy; override;
     property DataSource: string read FDataSource write FDataSource;
   end;
 
   TTreeViewEx = class(TCustomTreeView)
   private
     FBdType: TBdType;
+    FDarkMode: boolean;
+    FSelectedColor: TColor;
     procedure TreeViewCompare(Sender: TObject; Node1, Node2: TTreeNode;
       Data: Integer; var Compare: Integer);
     procedure WMRButtonDown(var Message: TWMLButtonDblClk); message WM_RBUTTONDOWN;
@@ -35,8 +40,10 @@ type
   public
     constructor Create(AOwner: TComponent); override;
     function NodeFoundByDataSource(TreeView: TTreeViewEx; DataSource: string): TTreeNode;
-    procedure AddServer(const Data: string; Login: string; Bases: TDataset);
+    procedure AddServer(const Data: TCommand; Login: string; Bases: TDataset);
     property BdType: TBdType read FBdType write SetBdType;
+    property DarkMode: boolean read FDarkMode write FDarkMode;
+    property SelectedColor: TColor read FSelectedColor write FSelectedColor;
   published
     property Align;
     property Anchors;
@@ -136,8 +143,10 @@ type
   private
     function GetItemType: TItemType;
     procedure SetItemType(const Value: TItemType);
+    function GetTableList: TStringList;
   public
     property ItemType: TItemType read GetItemType write SetItemType;
+    property TableList: TStringList read GetTableList;
   end;
 
 
@@ -150,6 +159,11 @@ begin
   Result := TItemType(Self.Data);
 end;
 
+function TTreeNodeHelper.GetTableList: TStringList;
+begin
+  Result := TTreeNodeEx(Self).FTableList;
+end;
+
 procedure TTreeNodeHelper.SetItemType(const Value: TItemType);
 begin
   Self.Data := Pointer(Integer(Value));
@@ -159,13 +173,19 @@ end;
 
 constructor TTreeViewEx.Create(AOwner: TComponent);
 begin
-  inherited;
+  inherited Create(AOwner);
   OnCompare := TreeViewCompare;
   ReadOnly := True;
   SortType := stText;
   Align := alClient;
   HideSelection := False;
   ShowRoot := False;
+
+  BevelOuter := bvNone;
+  BevelInner := bvNone;
+  BorderStyle := bsNone;
+  BorderWidth := 4;
+
   OnGetImageIndex := TreeViewExGetImageIndex;
   OnGetSelectedIndex := TreeViewExGetSelectedIndex;
   OnCreateNodeClass := TreeViewCreateNodeClass;
@@ -173,6 +193,8 @@ end;
 
 function TTreeViewEx.CustomDrawItem(Node: TTreeNode; State: TCustomDrawState;
   Stage: TCustomDrawStage; var PaintImages: Boolean): Boolean;
+var
+  NodeRect: TRect;
 begin
   Result := inherited CustomDrawItem(Node,State,Stage,PaintImages);
   if (Stage = cdPrePaint) and PaintImages then
@@ -180,7 +202,19 @@ begin
     if Node.ItemType = itLogin then
       Canvas.Font.Style := Canvas.Font.Style + [fsBold]
     else
+    begin
       Canvas.Font.Style := Canvas.Font.Style - [fsBold];
+
+      if (State = [cdsSelected]) and FDarkMode then
+      begin
+        Canvas.Brush.Color := FSelectedColor; //RGB(120,120,120); // RGB(34,61,84);
+        NodeRect := Node.DisplayRect(True);
+        NodeRect.Left := NodeRect.Left - Images.Width - 5;
+        NodeRect.Right := NodeRect.Right + 2;
+        Canvas.FillRect(NodeRect);
+        Canvas.Font.Color := clBlack;
+      end;
+    end;
   end;
 end;
 
@@ -229,9 +263,9 @@ begin
     Node.ImageIndex := 0
   else
     case Node.ItemType of
-      itBase    : Node.ImageIndex := 2;
-      itBaseRTI : Node.ImageIndex := 3;
-      itLogin   : Node.ImageIndex := 5;
+      itBase    : Node.ImageIndex := 1;
+      itBaseRTI : Node.ImageIndex := 2;
+      itLogin   : Node.ImageIndex := 3;
     end;
 end;
 
@@ -257,13 +291,13 @@ begin
   end;
 end;
 
-procedure TTreeViewEx.AddServer(const Data: string; Login: string;
+procedure TTreeViewEx.AddServer(const Data: TCommand; Login: string;
   Bases: TDataset);
 var
   TreeNode,Node: TTreeNode;
 begin
   TreeNode := Items.AddChild(nil,Data.Substring(0,Data.IndexOf('|')));
-  TreeNode.Data := Pointer(Self.BdType); //Server type
+  TreeNode.Data := Pointer(Self.BdType); //Передаем тип сервера
   TTreeNodeEx(TreeNode).DataSource := Data;
   if not Login.IsEmpty then
   begin
@@ -297,6 +331,20 @@ begin
         Result := TreeView.Items[i];
         break;
       end;
+end;
+
+{ TTreeNodeEx }
+
+constructor TTreeNodeEx.Create(AOwner: TTreeNodes);
+begin
+  inherited;
+  FTableList := TStringList.Create;
+end;
+
+destructor TTreeNodeEx.Destroy;
+begin
+  FTableList.Free;
+  inherited;
 end;
 
 end.

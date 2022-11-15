@@ -1,241 +1,238 @@
 inherited BDLoginForm: TBDLoginForm
   Left = 440
   Top = 383
-  ActiveControl = ServerList
   Caption = ''
-  ClientHeight = 162
-  ClientWidth = 295
+  ClientHeight = 222
+  ClientWidth = 239
+  Color = clWindow
+  KeyPreview = True
   OldCreateOrder = True
   Position = poScreenCenter
-  OnActivate = FormActivate
-  ExplicitWidth = 301
-  ExplicitHeight = 190
+  StyleElements = []
+  OnKeyDown = FormKeyDown
+  ExplicitWidth = 245
+  ExplicitHeight = 251
   PixelsPerInch = 96
   TextHeight = 13
-  object Panel1: TPanel
-    Left = 0
-    Top = 124
-    Width = 295
-    Height = 38
-    Align = alBottom
-    BevelOuter = bvNone
-    TabOrder = 0
-    object Panel2: TPanel
-      Left = 107
-      Top = 0
-      Width = 188
-      Height = 38
-      Align = alRight
-      BevelOuter = bvNone
-      TabOrder = 0
-      object OkBtn: TBitBtn
-        Left = 21
-        Top = 8
-        Width = 75
-        Height = 25
-        Action = OkAction
-        Caption = 'OK'
-        Default = True
-        Glyph.Data = {
-          36030000424D3603000000000000360000002800000010000000100000000100
-          18000000000000030000C40E0000C40E00000000000000000000FFFFFFFFFFFF
-          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-          FFFFFFFFFFFFFFFFFFB8D2B7357F33C8DCC7FFFFFFFFFFFFFFFFFFFFFFFFFFFF
-          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFB9D8B7398E332BAE2041
-          963CD7E9D6FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-          FFFFFFBADCB73C9B3333C32524CD132BBB1D4DA445E5F2E4FFFFFFFFFFFFFFFF
-          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFBBDDB73D9F334ACC3A29C31839CC2828
-          C21731B1235AAD51F0F8EFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFBBDFB7
-          3EA43363DA5333BC2255D1453EA43334B6252CB81B36AC286AB861F7FBF7FFFF
-          FFFFFFFFFFFFFFFFFFFFFFFFFF3FA83370E65F59D0486BE15A3FA83398D09243
-          AB373AB62932B2213BAB2D7BC373FDFEFDFFFFFFFFFFFFFFFFFFFFFFFFBCE1B7
-          41AC3374EA6341AC33BCE1B7FFFFFFB8E0B340AE3340B72F38AF2740AE318CCD
-          84FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFBCE3B741AF33BCE3B7FFFFFFFFFFFFFF
-          FFFF9DD69645B73758CF4756CD4545B536A3D99CFFFFFFFFFFFFFFFFFFFFFFFF
-          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFFFE84CD7A4DC13D61D8505FD6
-          4F46B737B9E3B3FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-          FFFFFFFFFFF9FDF96DC66156CC466BE25A72E96243B533FFFFFFFFFFFFFFFFFF
-          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0F9EF5DC24F77EE
-          6643B933BDE6B7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-          FFFFFFFFFFFFFFFFFFFFFFE3F5E044BB33BDE7B7FFFFFFFFFFFFFFFFFFFFFFFF
-          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
-        ModalResult = 1
-        TabOrder = 0
-      end
-      object CancelBtn: TBitBtn
-        Left = 102
-        Top = 8
-        Width = 75
-        Height = 25
-        Cancel = True
-        Caption = 'Cancel'
-        Glyph.Data = {
-          36030000424D3603000000000000360000002800000010000000100000000100
-          18000000000000030000C40E0000C40E00000000000000000000FFFFFFFFFFFF
-          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE5E5EF9393BA5959963B
-          3B823B3B825959969393BAE5E5EFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-          FFFFFFB2B2D44141972323A81717C61313D41313D41717C62323A8414197B2B2
-          D4FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFB2B2D835359F1A1AC61212B61111D111
-          11D11111D11111D11111B61717C434349FB2B2D8FFFFFFFFFFFFFFFFFFE5E5F3
-          4242A72020C31212B2DCDCDC1111B21111C81111C81111B2EEEEEE1111B21717
-          BE4141A7E5E5F3FFFFFFFFFFFF9393CD3030B41616C1D1D1D1D6D6D6DCDCDC11
-          11AD1111ADEAEAEAEEEEEEEEEEEE1111BE2424AB9393CDFFFFFFFFFFFF5858B4
-          3636C21212B41111B4D1D1D1D6D6D6DCDCDCE2E2E2E6E6E6EAEAEA1111B41111
-          B41B1BB25858B4FFFFFFFFFFFF3B3BAB4545CD2626B51414AB1111AAD1D1D1D6
-          D6D6DCDCDCE2E2E21111AA1111AA1111AA1A1AB03B3BABFFFFFFFFFFFF3B3BAE
-          4A4AD13333BB2E2EB813139FCECECED1D1D1D6D6D6DCDCDC11119E1111A11111
-          A11F1FAD3B3BAEFFFFFFFFFFFF5858BD4E4ED53737BF2323ABFFFFFFF7F7F7E8
-          E8E8DEDEDEDBDBDBDDDDDD11119B1616A02F2FB75858BDFFFFFFFFFFFF9393D6
-          4949CC4949D1FFFFFFFFFFFFFFFFFF4242CA4242CAFFFFFFFFFFFFFFFFFF4747
-          CF4141C49393D6FFFFFFFFFFFFE5E5F54646BE5C5CE35151D9FFFFFF4F4FD74F
-          4FD74F4FD74F4FD7FFFFFF5050D85555DD4545BDE5E5F5FFFFFFFFFFFFFFFFFF
-          B2B2E43F3FC06161E95F5FE75B5BE35B5BE35B5BE35B5BE35F5FE75E5EE53E3E
-          BFB2B2E4FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFB2B2E54747C24D4DD56262EB6B
-          6BF36A6AF26161EA4C4CD44747C2B2B2E5FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-          FFFFFFFFFFFFE5E5F69393DB5959C83B3BBE3B3BBE5959C89393DBE5E5F6FFFF
-          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
-        ModalResult = 2
-        TabOrder = 1
-      end
-    end
+  object Image1: TImage [0]
+    Left = 5
+    Top = 30
+    Width = 16
+    Height = 13
+    AutoSize = True
+    Picture.Data = {
+      07544269746D6170A6020000424DA60200000000000036000000280000001000
+      00000D0000000100180000000000700200000000000000000000000000000000
+      0000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+      FFFFFFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF8080
+      80C0C0C0000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF808080000000FF
+      FFFFFFFFFFFFFFFFFFFFFFFFFFFF808080C0C0C0000000FFFFFFFFFFFFFFFFFF
+      FFFFFFFFFFFFFFFFFF000000000000FFFFFFFFFFFFFFFFFFFFFFFF0000000000
+      00000000000000000000FFFFFFFFFFFF000000FFFFFF000000000000000000FF
+      FFFFFFFFFFFFFFFFFFFFFF008080FFFFFF00FFFF008080000000FFFFFFFFFFFF
+      000000000000000000000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF008080FFFF
+      FF00FFFF008080000000FFFFFFFFFFFF000000000000000000FFFFFFFFFFFFFF
+      FFFFFFFFFFFFFFFFFFFFFF008080008080008080008080000000FFFFFFFFFFFF
+      000000000000000000000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF8080
+      80C0C0C0000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+      FFFFFFFFFFFFFFFFFFFFFFFFFFFF808080C0C0C0000000FFFFFFFFFFFFFFFFFF
+      FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000C0C0
+      C0FFFFFF808080000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+      FFFF000000000000000000C0C0C0FFFFFF000000FFFFFF808080000000000000
+      000000000000000000000000000000000000C0C0C0C0C0C0C0C0C0FFFFFF0000
+      00FFFFFF808080FFFFFFC0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
+      C0C0808080808080808080808080FFFFFFFFFFFFFFFFFF808080808080808080
+      808080808080808080808080808080808080}
+    Transparent = True
+    Visible = False
   end
-  object GroupBox1: TGroupBox
-    Left = 0
-    Top = 0
-    Width = 295
-    Height = 124
-    Align = alClient
-    Caption = 'Parameters'
+  object SLabel: TLabel [1]
+    Left = 21
+    Top = 67
+    Width = 48
+    Height = 13
+    Caption = #1048#1089#1090#1086#1095#1085#1080#1082
+    FocusControl = ServerList
+  end
+  object Label1: TLabel [2]
+    Left = 21
+    Top = 103
+    Width = 25
+    Height = 13
+    HelpType = htKeyword
+    HelpKeyword = 'Port'
+    Caption = #1055#1086#1088#1090
+  end
+  object Label2: TLabel [3]
+    Left = 21
+    Top = 139
+    Width = 22
+    Height = 13
+    HelpType = htKeyword
+    HelpKeyword = 'Login'
+    Caption = #1048#1084#1103
+  end
+  object Label3: TLabel [4]
+    Left = 21
+    Top = 175
+    Width = 38
+    Height = 13
+    HelpType = htKeyword
+    HelpKeyword = 'Password'
+    Caption = #1055#1072#1088#1086#1083#1100
+  end
+  object Label4: TLabel [5]
+    Left = 107
+    Top = 37
+    Width = 87
+    Height = 13
+    HelpType = htKeyword
+    HelpKeyword = 'Custom select'
+    Alignment = taRightJustify
+    Caption = #1059#1082#1072#1079#1072#1090#1100' '#1074#1088#1091#1095#1085#1091#1102
+  end
+  inherited TopPanel: TPanel
+    Width = 239
+    TabOrder = 5
+    ExplicitWidth = 239
+  end
+  inherited OkPanel: TPanel
+    Left = 57
+    Top = 179
+    TabOrder = 6
+    ExplicitLeft = 57
+    ExplicitTop = 179
+  end
+  inherited CancelPanel: TPanel
+    Left = 138
+    Top = 179
+    TabOrder = 7
+    ExplicitLeft = 138
+    ExplicitTop = 179
+  end
+  inherited CancelBtn: TBitBtn
+    Left = 138
+    Top = 209
+    HelpType = htKeyword
+    HelpKeyword = 'Cancel'
+    TabOrder = 8
+    ExplicitLeft = 138
+    ExplicitTop = 209
+  end
+  inherited OkBtn: TBitBtn
+    Left = 57
+    Top = 209
+    Action = OkAction
+    TabOrder = 9
+    ExplicitLeft = 57
+    ExplicitTop = 209
+  end
+  object ServerList: TComboBox
+    Left = 73
+    Top = 64
+    Width = 140
+    Height = 24
+    BevelEdges = []
+    BevelInner = bvNone
+    BevelOuter = bvNone
+    Style = csOwnerDrawFixed
+    Color = clWhite
+    Ctl3D = False
+    DoubleBuffered = False
+    DropDownCount = 0
+    Font.Charset = RUSSIAN_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ItemHeight = 18
+    ParentCtl3D = False
+    ParentDoubleBuffered = False
+    ParentFont = False
+    ParentShowHint = False
+    ShowHint = False
+    TabOrder = 0
+    StyleElements = []
+    OnChange = ServerListChange
+    OnDrawItem = ServerListDrawItem
+  end
+  object cbCustom: TCheckBox
+    Left = 196
+    Top = 36
+    Width = 17
+    Height = 17
+    TabStop = False
+    Action = customAction
+    Alignment = taLeftJustify
+    Caption = ' '
+    Color = clBtnFace
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clDefault
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentColor = False
+    ParentFont = False
+    ParentShowHint = False
+    ShowHint = False
     TabOrder = 1
-    object Panel3: TPanel
-      Left = 2
-      Top = 15
-      Width = 291
-      Height = 107
-      Align = alClient
-      Alignment = taLeftJustify
-      BevelOuter = bvNone
-      Font.Charset = RUSSIAN_CHARSET
-      Font.Color = clWindowText
-      Font.Height = 11
-      Font.Name = 'MS Sans Serif'
-      Font.Style = []
-      ParentFont = False
-      TabOrder = 0
-      object SLabel: TLabel
-        Left = 20
-        Top = 13
-        Width = 31
-        Height = 13
-        Caption = 'Server'
-        FocusControl = ServerList
-      end
-      object Label2: TLabel
-        Left = 20
-        Top = 48
-        Width = 26
-        Height = 13
-        Caption = 'Login'
-        FocusControl = Login
-      end
-      object Label3: TLabel
-        Left = 20
-        Top = 83
-        Width = 46
-        Height = 13
-        Caption = 'Password'
-      end
-      object Image1: TImage
-        Left = 85
-        Top = 0
-        Width = 16
-        Height = 13
-        AutoSize = True
-        Picture.Data = {
-          07544269746D6170A6020000424DA60200000000000036000000280000001000
-          00000D0000000100180000000000700200000000000000000000000000000000
-          0000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-          FFFFFFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF8080
-          80C0C0C0000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF808080000000FF
-          FFFFFFFFFFFFFFFFFFFFFFFFFFFF808080C0C0C0000000FFFFFFFFFFFFFFFFFF
-          FFFFFFFFFFFFFFFFFF000000000000FFFFFFFFFFFFFFFFFFFFFFFF0000000000
-          00000000000000000000FFFFFFFFFFFF000000FFFFFF000000000000000000FF
-          FFFFFFFFFFFFFFFFFFFFFF008080FFFFFF00FFFF008080000000FFFFFFFFFFFF
-          000000000000000000000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF008080FFFF
-          FF00FFFF008080000000FFFFFFFFFFFF000000000000000000FFFFFFFFFFFFFF
-          FFFFFFFFFFFFFFFFFFFFFF008080008080008080008080000000FFFFFFFFFFFF
-          000000000000000000000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF8080
-          80C0C0C0000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-          FFFFFFFFFFFFFFFFFFFFFFFFFFFF808080C0C0C0000000FFFFFFFFFFFFFFFFFF
-          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000C0C0
-          C0FFFFFF808080000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-          FFFF000000000000000000C0C0C0FFFFFF000000FFFFFF808080000000000000
-          000000000000000000000000000000000000C0C0C0C0C0C0C0C0C0FFFFFF0000
-          00FFFFFF808080FFFFFFC0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
-          C0C0808080808080808080808080FFFFFFFFFFFFFFFFFF808080808080808080
-          808080808080808080808080808080808080}
-        Visible = False
-      end
-      object ServerList: TComboBox
-        Left = 107
-        Top = 8
-        Width = 175
-        Height = 24
-        Style = csOwnerDrawFixed
-        DropDownCount = 0
-        Font.Charset = RUSSIAN_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'MS Sans Serif'
-        Font.Style = []
-        ItemHeight = 18
-        ParentFont = False
-        ParentShowHint = False
-        ShowHint = True
-        TabOrder = 0
-        OnDrawItem = ServerListDrawItem
-      end
-      object Login: TComboBox
-        Left = 107
-        Top = 44
-        Width = 175
-        Height = 21
-        Font.Charset = RUSSIAN_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'MS Sans Serif'
-        Font.Style = []
-        ParentFont = False
-        ParentShowHint = False
-        ShowHint = True
-        TabOrder = 1
-        OnKeyDown = LoginKeyDown
-      end
-      object Password: TEdit
-        Left = 107
-        Top = 79
-        Width = 175
-        Height = 21
-        ParentShowHint = False
-        PasswordChar = '*'
-        ShowHint = True
-        TabOrder = 2
-      end
-    end
+  end
+  object Port: TEdit
+    Left = 73
+    Top = 100
+    Width = 140
+    Height = 21
+    BevelEdges = []
+    BevelInner = bvNone
+    BevelOuter = bvNone
+    Color = clWhite
+    Enabled = False
+    ParentShowHint = False
+    ShowHint = True
+    TabOrder = 2
+    StyleElements = []
+  end
+  object Password: TEdit
+    Left = 73
+    Top = 172
+    Width = 140
+    Height = 21
+    BevelEdges = []
+    BevelInner = bvNone
+    BevelOuter = bvNone
+    Color = clWhite
+    ParentShowHint = False
+    PasswordChar = '*'
+    ShowHint = True
+    TabOrder = 4
+  end
+  object Login: TEdit
+    Left = 73
+    Top = 136
+    Width = 140
+    Height = 21
+    BevelEdges = []
+    BevelInner = bvNone
+    BevelOuter = bvNone
+    Color = clWhite
+    ParentShowHint = False
+    ShowHint = True
+    TabOrder = 3
   end
   object ActionList1: TActionList
-    Left = 32
-    Top = 134
+    Left = 5
+    Top = 155
     object OkAction: TAction
       Caption = 'OK'
+      HelpKeyword = 'OK'
       OnExecute = OkActionExecute
       OnUpdate = OkActionUpdate
+    end
+    object customAction: TAction
+      Caption = #1059#1082#1072#1079#1072#1090#1100' '#1074#1088#1091#1095#1085#1091#1102
+      HelpKeyword = 'Custom select'
+      OnExecute = customActionExecute
+      OnUpdate = customActionUpdate
     end
   end
 end

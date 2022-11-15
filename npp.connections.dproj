@@ -1,14 +1,14 @@
 ﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
-        <ProjectGuid>{B77E9838-E19B-412D-97FB-DEBD8D673E64}</ProjectGuid>
+        <ProjectGuid>{7C3EE883-EADD-4600-8D3C-8D110F997EFD}</ProjectGuid>
+        <ProjectVersion>18.2</ProjectVersion>
+        <FrameworkType>VCL</FrameworkType>
         <MainSource>npp.connections.dpr</MainSource>
         <Base>True</Base>
-        <Config Condition="'$(Config)'==''">Release</Config>
+        <Config Condition="'$(Config)'==''">Debug</Config>
+        <Platform Condition="'$(Platform)'==''">Win64</Platform>
         <TargetedPlatforms>3</TargetedPlatforms>
         <AppType>Library</AppType>
-        <FrameworkType>None</FrameworkType>
-        <ProjectVersion>18.2</ProjectVersion>
-        <Platform Condition="'$(Platform)'==''">Win64</Platform>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
         <Base>true</Base>
@@ -23,7 +23,7 @@
         <CfgParent>Base</CfgParent>
         <Base>true</Base>
     </PropertyGroup>
-    <PropertyGroup Condition="'$(Config)'=='Release' or '$(Cfg_1)'!=''">
+    <PropertyGroup Condition="'$(Config)'=='Debug' or '$(Cfg_1)'!=''">
         <Cfg_1>true</Cfg_1>
         <CfgParent>Base</CfgParent>
         <Base>true</Base>
@@ -40,7 +40,7 @@
         <Cfg_1>true</Cfg_1>
         <Base>true</Base>
     </PropertyGroup>
-    <PropertyGroup Condition="'$(Config)'=='Debug' or '$(Cfg_2)'!=''">
+    <PropertyGroup Condition="'$(Config)'=='Release' or '$(Cfg_2)'!=''">
         <Cfg_2>true</Cfg_2>
         <CfgParent>Base</CfgParent>
         <Base>true</Base>
@@ -58,106 +58,97 @@
         <Base>true</Base>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base)'!=''">
-        <DCC_S>false</DCC_S>
-        <DCC_ImageBase>00400000</DCC_ImageBase>
-        <DCC_N>false</DCC_N>
+        <DCC_Define>NPPCONNECTIONS;$(DCC_Define)</DCC_Define>
+        <DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;$(DCC_Namespace)</DCC_Namespace>
         <GenDll>true</GenDll>
         <SanitizedProjectName>npp_connections</SanitizedProjectName>
-        <DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;Winapi;Vcl;System.Win;$(DCC_Namespace)</DCC_Namespace>
-        <DCC_K>false</DCC_K>
+        <DCC_DcuOutput>.\$(Platform)\$(Config)</DCC_DcuOutput>
+        <DCC_ExeOutput>.\$(Platform)\$(Config)</DCC_ExeOutput>
         <DCC_E>false</DCC_E>
+        <DCC_N>false</DCC_N>
+        <DCC_S>false</DCC_S>
         <DCC_F>false</DCC_F>
-        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=;CFBundleName=</VerInfo_Keys>
-        <VerInfo_Locale>1049</VerInfo_Locale>
+        <DCC_K>false</DCC_K>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win32)'!=''">
-        <VerInfo_DLL>true</VerInfo_DLL>
-        <VerInfo_Release>1</VerInfo_Release>
         <DCC_Define>NPPUNICODE;$(DCC_Define)</DCC_Define>
         <Manifest_File>(None)</Manifest_File>
         <DCC_DcuOutput>.\$(Platform)\$(Config)\DCU</DCC_DcuOutput>
-        <DCC_ExeOutput>.\$(Platform)\$(Config)</DCC_ExeOutput>
-        <DCC_Namespace>Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
-        <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
-        <BT_BuildType>Debug</BT_BuildType>
+        <DCC_Namespace>Winapi;System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
         <VerInfo_Locale>1033</VerInfo_Locale>
-        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.1.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.1.0;Comments=;ProgramID=</VerInfo_Keys>
+        <DCC_UsePackage>DBXSqliteDriver;IndyIPCommon;RESTComponents;bindcompdbx;DBXInterBaseDriver;vcl;IndyIPServer;vclactnband;vclFireDAC;IndySystem;tethering;svnui;dsnapcon;FireDACADSDriver;FireDACMSAccDriver;fmxFireDAC;vclimg;TeeDB;FireDAC;vcltouch;vcldb;bindcompfmx;svn;Intraweb;FireDACSqliteDriver;FireDACPgDriver;ibmonitor;inetdb;FMXTee;soaprtl;DbxCommonDriver;FmxTeeUI;ibxpress;FireDACIBDriver;fmx;fmxdae;xmlrtl;soapmidas;frx24;fmxobj;vclwinx;ibxbindings;rtl;vclib;DbxClientDriver;Tee;frxTee24;CustomIPTransport;vcldsnap;dbexpress;IndyCore;vclx;bindcomp;appanalytics;dsnap;FireDACCommon;IndyIPClient;bdertl;bindcompvcl;vcldbx;RESTBackendComponents;frxe24;TeeUI;VCLRESTComponents;soapserver;dbxcds;VclSmp;adortl;vclie;bindengine;DBXMySQLDriver;CloudService;dsnapxml;FireDACMySQLDriver;dbrtl;IndyProtocols;inetdbxpress;frxDB24;FireDACCommonODBC;FireDACCommonDriver;inet;fmxase;$(DCC_UsePackage)</DCC_UsePackage>
+        <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+        <BT_BuildType>Debug</BT_BuildType>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win64)'!=''">
-        <VerInfo_DLL>true</VerInfo_DLL>
-        <VerInfo_Release>1</VerInfo_Release>
-        <DCC_Define>NPPUNICODE;$(DCC_Define)</DCC_Define>
         <Manifest_File>(None)</Manifest_File>
-        <DCC_DcuOutput>.\$(Platform)\$(Config)\DCU</DCC_DcuOutput>
-        <DCC_ExeOutput>.\$(Platform)\$(Config)</DCC_ExeOutput>
-        <BT_BuildType>Debug</BT_BuildType>
+        <DCC_Define>NPPUNICODE;$(DCC_Define)</DCC_Define>
+        <DCC_Namespace>Winapi;System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;$(DCC_Namespace)</DCC_Namespace>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
-        <DCC_Namespace>Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;$(DCC_Namespace)</DCC_Namespace>
+        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
         <VerInfo_Locale>1033</VerInfo_Locale>
-        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.1.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=;ProductName=;ProductVersion=1.0.1.0;Comments=</VerInfo_Keys>
+        <DCC_DcuOutput>.\$(Platform)\$(Config)\DCU</DCC_DcuOutput>
+        <BT_BuildType>Debug</BT_BuildType>
+        <DCC_UsePackage>DBXSqliteDriver;IndyIPCommon;RESTComponents;bindcompdbx;DBXInterBaseDriver;vcl;IndyIPServer;vclactnband;vclFireDAC;IndySystem;tethering;dsnapcon;FireDACADSDriver;FireDACMSAccDriver;fmxFireDAC;vclimg;TeeDB;FireDAC;vcltouch;vcldb;bindcompfmx;Intraweb;FireDACSqliteDriver;FireDACPgDriver;ibmonitor;inetdb;FMXTee;soaprtl;DbxCommonDriver;FmxTeeUI;ibxpress;FireDACIBDriver;fmx;fmxdae;xmlrtl;soapmidas;fmxobj;vclwinx;ibxbindings;rtl;vclib;DbxClientDriver;Tee;CustomIPTransport;vcldsnap;dbexpress;IndyCore;vclx;bindcomp;appanalytics;dsnap;FireDACCommon;IndyIPClient;bindcompvcl;RESTBackendComponents;TeeUI;VCLRESTComponents;soapserver;dbxcds;VclSmp;adortl;vclie;bindengine;DBXMySQLDriver;CloudService;dsnapxml;FireDACMySQLDriver;dbrtl;IndyProtocols;inetdbxpress;FireDACCommonODBC;FireDACCommonDriver;inet;fmxase;$(DCC_UsePackage)</DCC_UsePackage>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1)'!=''">
-        <DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
-        <DCC_DebugInformation>0</DCC_DebugInformation>
-        <DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
-        <DCC_Define>RELEASE;$(DCC_Define)</DCC_Define>
-    </PropertyGroup>
-    <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
-        <VerInfo_Release>1</VerInfo_Release>
-        <DCC_DcuOutput>.\DCU\$(Platform)\$(Config)</DCC_DcuOutput>
-        <DCC_ExeOutput>.\$(Config)\$(Platform)\$(Config)</DCC_ExeOutput>
-        <VerInfo_DLL>true</VerInfo_DLL>
-        <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
-        <VerInfo_Locale>1033</VerInfo_Locale>
-        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.1.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=$(MSBuildProjectName);ProductVersion=1.0.1.0;Comments=;ProgramID=</VerInfo_Keys>
-    </PropertyGroup>
-    <PropertyGroup Condition="'$(Cfg_1_Win64)'!=''">
-        <DCC_DcuOutput>.\DCU\$(Platform)\$(Config)</DCC_DcuOutput>
-        <VerInfo_DLL>true</VerInfo_DLL>
-        <DCC_ExeOutput>.\$(Config)\$(Platform)\$(Config)</DCC_ExeOutput>
-        <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
-        <VerInfo_Release>1</VerInfo_Release>
-        <VerInfo_Locale>1033</VerInfo_Locale>
-        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.1.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=;ProductName=$(MSBuildProjectName);ProductVersion=1.0.1.0;Comments=</VerInfo_Keys>
-    </PropertyGroup>
-    <PropertyGroup Condition="'$(Cfg_2)'!=''">
+        <DCC_ExeOutput>C:\Program Files\Notepad++\plugins\dia2.notepad\</DCC_ExeOutput>
         <DCC_Define>DEBUG;$(DCC_Define)</DCC_Define>
+        <DCC_DebugDCUs>true</DCC_DebugDCUs>
         <DCC_Optimize>false</DCC_Optimize>
         <DCC_GenerateStackFrames>true</DCC_GenerateStackFrames>
+        <DCC_DebugInfoInExe>true</DCC_DebugInfoInExe>
+        <DCC_RemoteDebug>true</DCC_RemoteDebug>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
+        <DCC_ExeOutput>C:\npp.8.4.6.portable\plugins\dia2.notepad\</DCC_ExeOutput>
+        <Debugger_HostApplication>C:\npp.8.4.6.portable\notepad++.exe</Debugger_HostApplication>
+        <VerInfo_Locale>1033</VerInfo_Locale>
+        <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+        <DCC_RemoteDebug>false</DCC_RemoteDebug>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Cfg_1_Win64)'!=''">
+        <DCC_ExeOutput>C:\Program Files\Notepad++\plugins\npp.Connections\</DCC_ExeOutput>
+        <DCC_Define>NPPCONNECTIO;$(DCC_Define)</DCC_Define>
+        <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+        <VerInfo_Locale>1033</VerInfo_Locale>
+        <Debugger_HostApplication>C:\Program Files\Notepad++\notepad++.exe</Debugger_HostApplication>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Cfg_2)'!=''">
+        <DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
+        <DCC_Define>RELEASE;$(DCC_Define)</DCC_Define>
+        <DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
+        <DCC_DebugInformation>0</DCC_DebugInformation>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
-        <DCC_ExeOutput>.\$(Config)\$(Platform)\$(Config)</DCC_ExeOutput>
+        <VerInfo_Release>3</VerInfo_Release>
+        <VerInfo_MajorVer>0</VerInfo_MajorVer>
+        <Debugger_HostApplication>C:\Program Files (x86)\Notepad++\notepad++.exe</Debugger_HostApplication>
+        <Debugger_LoadAllSymbols>false</Debugger_LoadAllSymbols>
         <VerInfo_DLL>true</VerInfo_DLL>
-        <DCC_DcuOutput>.\DCU\$(Platform)\$(Config)</DCC_DcuOutput>
+        <VerInfo_Keys>CompanyName=Diasoft;FileDescription=Notepad++ Diasoft Plugin;FileVersion=0.0.3.0;InternalName=dia2notepad;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Locale>1049</VerInfo_Locale>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
-        <VerInfo_Locale>1033</VerInfo_Locale>
-        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=;ProgramID=com.embarcadero.$(MSBuildProjectName)</VerInfo_Keys>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win64)'!=''">
-        <DCC_ExeOutput>.\$(Config)\$(Platform)\$(Config)</DCC_ExeOutput>
-        <DCC_DcuOutput>.\DCU\$(Platform)\$(Config)</DCC_DcuOutput>
+        <DCC_Define>NPPCONNECTIONS;$(DCC_Define)</DCC_Define>
+        <VerInfo_MajorVer>0</VerInfo_MajorVer>
+        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=0.0.3.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Release>3</VerInfo_Release>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
-        <VerInfo_Release>2</VerInfo_Release>
-        <VerInfo_DLL>true</VerInfo_DLL>
         <VerInfo_Locale>1033</VerInfo_Locale>
-        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.2.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=npp.connections;ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
     </PropertyGroup>
     <ItemGroup>
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
-        <DCCReference Include="lib\nppplugin.pas"/>
-        <DCCReference Include="lib\SciSupport.pas"/>
-        <DCCReference Include="plugin.pas"/>
+        <DCCReference Include="ConstUnit.pas"/>
+        <DCCReference Include="Easy.diaplugin.pas"/>
         <DCCReference Include="ThreadUnit.pas"/>
-        <DCCReference Include="lib\NppForms.pas">
-            <Form>NppForm</Form>
-        </DCCReference>
-        <DCCReference Include="lib\NppDockingForms.pas">
-            <Form>NppDockingForm</Form>
-        </DCCReference>
-        <DCCReference Include="connectionFormUnit.pas">
-            <Form>connectionForm</Form>
+        <DCCReference Include="logFormUnit.pas">
+            <Form>logForm</Form>
+            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="SqlThreadUnit.pas"/>
         <DCCReference Include="StringGridsUnit.pas"/>
@@ -166,23 +157,112 @@
         <DCCReference Include="BDLoginUnit.pas">
             <Form>BDLoginForm</Form>
         </DCCReference>
-        <DCCReference Include="connectionFormHelpersUnit.pas"/>
+        <DCCReference Include="LogFormHelpersUnit.pas"/>
         <DCCReference Include="TreeViewExUnit.pas"/>
-        <BuildConfiguration Include="Debug">
+        <DCCReference Include="lib\NppDockingForms.pas">
+            <Form>NppDockingForm</Form>
+        </DCCReference>
+        <DCCReference Include="lib\NppForms.pas">
+            <Form>NppForm</Form>
+        </DCCReference>
+        <DCCReference Include="lib\nppplugin.pas"/>
+        <DCCReference Include="lib\SciSupport.pas"/>
+        <DCCReference Include="regUnit.pas"/>
+        <DCCReference Include="CustomDialogUnit.pas">
+            <Form>CustomDialogForm</Form>
+        </DCCReference>
+        <DCCReference Include="TranslateComponentsUnit.pas"/>
+        <RcItem Include="inclide\bug.bmp">
+            <ResourceType>BITMAP</ResourceType>
+            <ResourceId>BUG</ResourceId>
+        </RcItem>
+        <RcItem Include="inclide\icons\bug.ico">
+            <ResourceType>ICON</ResourceType>
+            <ResourceId>IBUG</ResourceId>
+        </RcItem>
+        <RcItem Include="inclide\plan.bmp">
+            <ResourceType>BITMAP</ResourceType>
+            <ResourceId>PLAN</ResourceId>
+        </RcItem>
+        <RcItem Include="inclide\icons\plan.ico">
+            <ResourceType>ICON</ResourceType>
+            <ResourceId>IPLAN</ResourceId>
+        </RcItem>
+        <RcItem Include="inclide\prolivka.bmp">
+            <ResourceType>BITMAP</ResourceType>
+            <ResourceId>PROLIVKA</ResourceId>
+        </RcItem>
+        <RcItem Include="inclide\icons\prolivka.ico">
+            <ResourceType>ICON</ResourceType>
+            <ResourceId>IPROLIVKA</ResourceId>
+        </RcItem>
+        <RcItem Include="inclide\report.bmp">
+            <ResourceType>BITMAP</ResourceType>
+            <ResourceId>REPORT</ResourceId>
+        </RcItem>
+        <RcItem Include="inclide\icons\report.ico">
+            <ResourceType>ICON</ResourceType>
+            <ResourceId>IREPORT</ResourceId>
+        </RcItem>
+        <RcItem Include="inclide\sql.bmp">
+            <ResourceType>BITMAP</ResourceType>
+            <ResourceId>SQL</ResourceId>
+        </RcItem>
+        <RcItem Include="inclide\icons\sql.ico">
+            <ResourceType>ICON</ResourceType>
+            <ResourceId>ISQL</ResourceId>
+        </RcItem>
+        <RcItem Include="inclide\tree.bmp">
+            <ResourceType>BITMAP</ResourceType>
+            <ResourceId>TREE</ResourceId>
+        </RcItem>
+        <RcItem Include="inclide\icons\tree.ico">
+            <ResourceType>ICON</ResourceType>
+            <ResourceId>ITREE</ResourceId>
+        </RcItem>
+        <RcItem Include="inclide\icons\sqldark.ico">
+            <ResourceType>ICON</ResourceType>
+            <ResourceId>ISQLDARK</ResourceId>
+        </RcItem>
+        <RcItem Include="inclide\icons\plandark.ico">
+            <ResourceType>ICON</ResourceType>
+            <ResourceId>IPLANDARK</ResourceId>
+        </RcItem>
+        <RcItem Include="inclide\icons\tree_fluent.ico">
+            <ResourceType>ICON</ResourceType>
+            <ResourceId>ITREEF</ResourceId>
+        </RcItem>
+        <RcItem Include="inclide\icons\tree_fluentdark.ico">
+            <ResourceType>ICON</ResourceType>
+            <ResourceId>ITREEFDARK</ResourceId>
+        </RcItem>
+        <RcItem Include="inclide\icons\plandark.bmp">
+            <ResourceType>BITMAP</ResourceType>
+            <ResourceId>PLANDARK</ResourceId>
+        </RcItem>
+        <RcItem Include="inclide\icons.1\server_button_for_white_mode.ico">
+            <ResourceType>ICON</ResourceType>
+            <ResourceId>ISERVER</ResourceId>
+        </RcItem>
+        <RcItem Include="inclide\icons.1\server_button_for_black_mode.ico">
+            <ResourceType>ICON</ResourceType>
+            <ResourceId>ISERVERDARK</ResourceId>
+        </RcItem>
+        <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
         </BuildConfiguration>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
-        <BuildConfiguration Include="Release">
+        <BuildConfiguration Include="Debug">
             <Key>Cfg_1</Key>
             <CfgParent>Base</CfgParent>
         </BuildConfiguration>
     </ItemGroup>
     <ProjectExtensions>
         <Borland.Personality>Delphi.Personality.12</Borland.Personality>
-        <Borland.ProjectType/>
+        <Borland.ProjectType>Application</Borland.ProjectType>
         <BorlandProject>
             <Delphi.Personality>
                 <Source>
@@ -193,18 +273,27 @@
                     <Excluded_Packages Name="$(BDSBIN)\dclofficexp240.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
                 </Excluded_Packages>
             </Delphi.Personality>
-            <Platforms>
-                <Platform value="Win32">True</Platform>
-                <Platform value="Win64">True</Platform>
-            </Platforms>
             <Deployment Version="3">
                 <DeployFile LocalName="$(BDS)\Redist\osx32\libcgunwind.1.0.dylib" Class="DependencyModule">
                     <Platform Name="OSX32">
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="$(BDS)\Redist\iossimulator\libcgunwind.1.0.dylib" Class="DependencyModule">
-                    <Platform Name="iOSSimulator">
+                <DeployFile LocalName="C:\Program Files (x86)\Notepad++\plugins\npp_connections.dll" Configuration="Release" Class="ProjectOutput">
+                    <Platform Name="Win32">
+                        <RemoteName>npp_connections.dll</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="C:\Program Files (x86)\Notepad++\plugins\npp_connections.dll" Configuration="Debug" Class="ProjectOutput">
+                    <Platform Name="Win32">
+                        <RemoteName>npp_connections.dll</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="C:\Program Files\Notepad++\plugins\npp.Connections\npp.connections.dll" Configuration="Debug" Class="ProjectOutput">
+                    <Platform Name="Win64">
+                        <RemoteName>npp_connections.dll</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
@@ -213,18 +302,30 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
+                <DeployFile LocalName="$(BDS)\Redist\iossimulator\libcgunwind.1.0.dylib" Class="DependencyModule">
+                    <Platform Name="iOSSimulator">
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="Win64\Release\npp.connections.dll" Configuration="Release" Class="ProjectOutput">
+                    <Platform Name="Win64">
+                        <RemoteName>npp_connections.dll</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="$(BDS)\Redist\osx32\libcgsqlite3.dylib" Class="DependencyModule">
                     <Platform Name="OSX32">
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="npp.connections.dll" Configuration="Debug" Class="ProjectOutput">
-                    <Platform Name="Win32">
-                        <RemoteName>npp_connections.dll</RemoteName>
-                        <Overwrite>true</Overwrite>
+                <DeployClass Name="ProjectiOSDeviceResourceRules">
+                    <Platform Name="iOSDevice64">
+                        <Operation>1</Operation>
                     </Platform>
-                </DeployFile>
-                <DeployClass Name="ProjectiOSDeviceResourceRules"/>
+                    <Platform Name="iOSDevice32">
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
                 <DeployClass Name="ProjectOSXResource">
                     <Platform Name="OSX32">
                         <RemoteDir>Contents\Resources</RemoteDir>
@@ -242,7 +343,11 @@
                         <RemoteDir>Contents\MacOS</RemoteDir>
                         <Operation>0</Operation>
                     </Platform>
+                    <Platform Name="iOSSimulator">
+                        <Operation>1</Operation>
+                    </Platform>
                     <Platform Name="OSX32">
+                        <RemoteDir>Contents\MacOS</RemoteDir>
                         <Operation>1</Operation>
                     </Platform>
                 </DeployClass>
@@ -283,6 +388,7 @@
                         <Operation>1</Operation>
                     </Platform>
                     <Platform Name="OSX32">
+                        <RemoteDir>Contents\MacOS</RemoteDir>
                         <Operation>1</Operation>
                     </Platform>
                     <Platform Name="Android">
@@ -298,6 +404,7 @@
                         <Operation>0</Operation>
                     </Platform>
                     <Platform Name="OSX32">
+                        <RemoteDir>Contents\MacOS</RemoteDir>
                         <Operation>1</Operation>
                         <Extensions>.framework</Extensions>
                     </Platform>
@@ -353,7 +460,17 @@
                         <Operation>1</Operation>
                     </Platform>
                 </DeployClass>
-                <DeployClass Name="ProjectiOSInfoPList"/>
+                <DeployClass Name="ProjectiOSInfoPList">
+                    <Platform Name="iOSSimulator">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSDevice64">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSDevice32">
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
                 <DeployClass Name="AndroidLibnativeArmeabiFile">
                     <Platform Name="Android">
                         <RemoteDir>library\lib\armeabi</RemoteDir>
@@ -368,6 +485,7 @@
                         <Operation>1</Operation>
                     </Platform>
                     <Platform Name="OSX32">
+                        <RemoteDir>Contents\MacOS</RemoteDir>
                         <Operation>1</Operation>
                     </Platform>
                 </DeployClass>
@@ -421,7 +539,16 @@
                         <Operation>1</Operation>
                     </Platform>
                 </DeployClass>
-                <DeployClass Name="ProjectiOSEntitlements"/>
+                <DeployClass Name="ProjectiOSEntitlements">
+                    <Platform Name="iOSDevice64">
+                        <RemoteDir>..\</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSDevice32">
+                        <RemoteDir>..\</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
                 <DeployClass Name="Android_LauncherIcon72">
                     <Platform Name="Android">
                         <RemoteDir>res\drawable-hdpi</RemoteDir>
@@ -434,8 +561,18 @@
                         <Operation>1</Operation>
                     </Platform>
                 </DeployClass>
-                <DeployClass Name="ProjectOSXInfoPList"/>
-                <DeployClass Name="ProjectOSXEntitlements"/>
+                <DeployClass Name="ProjectOSXInfoPList">
+                    <Platform Name="OSX32">
+                        <RemoteDir>Contents</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="ProjectOSXEntitlements">
+                    <Platform Name="OSX32">
+                        <RemoteDir>..\</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
                 <DeployClass Name="UWP_DelphiLogo150">
                     <Platform Name="Win32">
                         <RemoteDir>Assets</RemoteDir>
@@ -505,6 +642,7 @@
                         <Operation>0</Operation>
                     </Platform>
                     <Platform Name="OSX32">
+                        <RemoteDir>Contents\Resources\StartUp\</RemoteDir>
                         <Operation>0</Operation>
                     </Platform>
                     <Platform Name="iOSDevice32">
@@ -533,6 +671,7 @@
                         <Extensions>.dylib</Extensions>
                     </Platform>
                     <Platform Name="OSX32">
+                        <RemoteDir>Contents\MacOS</RemoteDir>
                         <Operation>1</Operation>
                         <Extensions>.dylib</Extensions>
                     </Platform>
@@ -568,7 +707,20 @@
                         <Operation>0</Operation>
                         <Extensions>.dll;.bpl</Extensions>
                     </Platform>
+                    <Platform Name="iOSDevice64">
+                        <Operation>1</Operation>
+                        <Extensions>.dylib</Extensions>
+                    </Platform>
                     <Platform Name="OSX32">
+                        <RemoteDir>Contents\MacOS</RemoteDir>
+                        <Operation>1</Operation>
+                        <Extensions>.dylib</Extensions>
+                    </Platform>
+                    <Platform Name="iOSDevice32">
+                        <Operation>1</Operation>
+                        <Extensions>.dylib</Extensions>
+                    </Platform>
+                    <Platform Name="iOSSimulator">
                         <Operation>1</Operation>
                         <Extensions>.dylib</Extensions>
                     </Platform>
@@ -578,10 +730,14 @@
                 <ProjectRoot Platform="iOSDevice32" Name="$(PROJECTNAME).app"/>
                 <ProjectRoot Platform="Linux64" Name="$(PROJECTNAME)"/>
                 <ProjectRoot Platform="Win32" Name="$(PROJECTNAME)"/>
-                <ProjectRoot Platform="OSX32" Name="$(PROJECTNAME)"/>
+                <ProjectRoot Platform="OSX32" Name="$(PROJECTNAME).app"/>
                 <ProjectRoot Platform="Android" Name="$(PROJECTNAME)"/>
                 <ProjectRoot Platform="iOSSimulator" Name="$(PROJECTNAME).app"/>
             </Deployment>
+            <Platforms>
+                <Platform value="Win32">True</Platform>
+                <Platform value="Win64">True</Platform>
+            </Platforms>
         </BorlandProject>
         <ProjectFileVersion>12</ProjectFileVersion>
     </ProjectExtensions>

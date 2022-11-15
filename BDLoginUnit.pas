@@ -3,38 +3,39 @@
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
-  System.Classes, Vcl.Graphics, Vcl.Controls, Vcl.Forms,
-  Vcl.Dialogs, Vcl.StdCtrls, Vcl.Buttons, Vcl.ExtCtrls,
-  System.IniFiles, System.Win.Registry, System.Actions, Vcl.ActnList,
-  plugin, NppForms;
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, NppForms, StdCtrls, Buttons, ExtCtrls, ConstUnit, regUnit,
+  IniFiles, Registry, System.Actions, Vcl.ActnList, Data.DB, Vcl.Grids,
+  {$IFNDEF NPPCONNECTIONS}diaConstUnit,{$ENDIF}
+  Vcl.DBGrids, Data.Win.ADODB, CustomDialogUnit;
 
 type
-  TBDLoginForm = class(TNppForm)
-    Panel1: TPanel;
-    Panel2: TPanel;
-    OkBtn: TBitBtn;
-    CancelBtn: TBitBtn;
-    GroupBox1: TGroupBox;
-    Panel3: TPanel;
-    ServerList: TComboBox;
-    Login: TComboBox;
+  TBDLoginForm = class(TCustomDialogForm)
+    ActionList1: TActionList;
+    OkAction: TAction;
+    customAction: TAction;
+    Image1: TImage;
     SLabel: TLabel;
+    ServerList: TComboBox;
+    cbCustom: TCheckBox;
+    Port: TEdit;
+    Label1: TLabel;
     Label2: TLabel;
     Label3: TLabel;
     Password: TEdit;
-    Image1: TImage;
-    ActionList1: TActionList;
-    OkAction: TAction;
-    procedure FormActivate(Sender: TObject);
-    procedure PasswordKeyDown(Sender: TObject; var Key: Word;
-      Shift: TShiftState);
-    procedure LoginKeyDown(Sender: TObject; var Key: Word;
-      Shift: TShiftState);
+    Label4: TLabel;
+    Login: TEdit;
     procedure ServerListDrawItem(Control: TWinControl; Index: Integer;
       Rect: TRect; State: TOwnerDrawState);
     procedure OkActionExecute(Sender: TObject);
+    procedure ServerListChange(Sender: TObject);
     procedure OkActionUpdate(Sender: TObject);
+    procedure customActionUpdate(Sender: TObject);
+    procedure customActionExecute(Sender: TObject);
+    procedure CancelPanelClick(Sender: TObject);
+    procedure OkPanelClick(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure CancelPanelMouseEnter(Sender: TObject);
   private
     { Private declarations }
     FBDType: TBdType;
@@ -47,25 +48,28 @@ type
     const cnstSrcSybase = 'SQL.INI';
     const cnstSybaseName = 'SYBASE';
     const cnstSybaseRoot = 'SYBROOT';
-    const cnstNothing = 'Empty list';
+    const cnstNothing = 'Пусто';
 
     procedure FillNothing;
+    procedure FillServerList;
     procedure FillServerListMS;
     procedure FillServerListSyb;
+    procedure FillServerListCustom;
     procedure FillODBCSources;
-  public
-    const constDBList = 'select name from master..sysdatabases order by name';
 
+  protected
+    procedure ChangeColorMode(Sender: TObject); override;
+  public
     procedure Get(var aDataSource,aServer,aPort,aLogin,aPassword: string);
-    function Data: string;
+    procedure SaveCurrentDataSourceToRegistry;
+    function Data: TCommand;
+    function DoForm: TModalResult; override;
+
     property BDType: TBdType read FBDType write FBDType;
   end;
 
 
 implementation
-
-//ODBC
-
 
 function SQLDataSources(EnvironmentHandle:Pointer;Direction:Smallint;
     ServerName:PAnsiChar;BufferLength1:Smallint;NameLength1Ptr:PSmallInt;
@@ -96,35 +100,87 @@ const
 var
   datasrc,descrip:array [0..MAX_BUF-1] of AnsiChar;
   direction:Smallint;
-  rdsrc,rdesc:SmallInt;
+  rdsrc,rdesc,res:SmallInt;
   hEnv:Pointer;
 begin
   rdsrc:=0;
   rdesc:=0;
   datasrc[0]:=#0;
   descrip[0]:=#0;
-  SQLAllocHandle(SQL_HANDLE_ENV, SQL_NULL_HENV, @hEnv);
+  res := SQLAllocHandle(SQL_HANDLE_ENV, SQL_NULL_HENV, @hEnv);
   SQLSetEnvAttr(hEnv, SQL_ATTR_ODBC_VERSION,Pointer(SQL_OV_ODBC3),SQL_IS_INTEGER);
   direction:=SQL_FETCH_FIRST;
   Strings.Clear;
   while (SQLDataSources(hEnv,direction,@datasrc[0],MAX_BUF,@rdsrc,@descrip[0],MAX_BUF,@rdesc)<>SQL_NO_DATA) do
   begin
-    Strings.Add(AnsiString(datasrc)+ '||');
+    Strings.Add(string(datasrc)+ '||');
     direction:=SQL_FETCH_NEXT;
   end;
   SQLFreeHandle(SQL_HANDLE_ENV, hEnv);
 end;
 
-function TBDLoginForm.Data: string;
+procedure TBDLoginForm.CancelPanelClick(Sender: TObject);
+begin
+  CancelBtn.Click;
+end;
+
+procedure TBDLoginForm.CancelPanelMouseEnter(Sender: TObject);
+begin
+  inherited;
+  TPanel(Sender).Color := RGB(GetRValue(Color)+10,GetGValue(Color)+10,GetBValue(Color)+10)
+end;
+
+procedure TBDLoginForm.ChangeColorMode(Sender: TObject);
+begin
+  inherited;
+  if DarkMode then
+  begin
+    Port.BorderStyle := bsNone;
+    Password.BorderStyle := bsNone;
+    ServerList.BevelKind := bkFlat;
+    Login.BorderStyle := bsNone;
+  end;
+
+end;
+
+procedure TBDLoginForm.customActionExecute(Sender: TObject);
+begin
+  FillServerList;
+end;
+
+procedure TBDLoginForm.customActionUpdate(Sender: TObject);
+begin
+  TAction(Sender).Enabled := FBDType in [bdMSSQL,bdSybase];
+end;
+
+function TBDLoginForm.Data: TCommand;
 var
   i: Integer;
 begin
+  Result := '';
   i := ServerList.ItemIndex;
-  if i >= 0 then
-    Result := ServerList.Items[ServerList.ItemIndex] +
-      Format(cnstData,[Login.Text,Password.Text,Integer(FBdType)])
+  if cbCustom.Checked then
+  begin
+    if (ServerList.Text <> '') and (Port.Text <> '') then
+    begin
+      Result := Format(cnstItem,[ServerList.Text,ServerList.Text,Port.Text]) +
+        Format(cnstData,[Login.Text,Password.Text,Integer(FBdType)])
+    end;
+  end
   else
-    Result := '';
+    if i >= 0 then
+      Result := ServerList.Items[ServerList.ItemIndex] +
+        Format(cnstData,[Login.Text,Password.Text,Integer(FBdType)])
+end;
+
+function TBDLoginForm.DoForm: TModalResult;
+begin
+  Caption := constLoginBDCaption + constLoginBDCaptionArray[FBDType];
+  TopPanel.Caption := Caption;
+  SLabel.Caption := constDSBDCaptionArray[FBDType];
+  if (FBDType = bdPostgreSQL) then cbCustom.Checked := True;
+  FillServerList;
+  Result := inherited DoForm;
 end;
 
 procedure TBDLoginForm.FillNothing;
@@ -181,7 +237,7 @@ begin
       Servers.Sorted := True;
       for i := 0 to Servers.Count - 1 do
       begin
-        S := Registry.ReadString(Servers[i]);
+        S := Registry.ReadString(Servers[i]); //DBMSSOCN,Asql,2012
 
         FDataSource := Servers[i];
 
@@ -207,7 +263,82 @@ begin
     Registry.Free;
     Servers.Free;
     Servers32.Free;
-    if ServerList.Items.Count > 0 then ServerList.ItemIndex := 0;
+    if ServerList.Items.Count > 0 then
+    begin
+      ServerList.ItemIndex := 0;
+      ServerListChange(ServerList);
+    end;
+  end;
+end;
+
+procedure TBDLoginForm.FillServerList;
+begin
+  ServerList.Clear;
+  Port.Text := '';
+  if cbCustom.Checked then
+  begin
+    Port.Enabled := True;
+    Port.NumbersOnly := True;
+    ServerList.Style := csDropDown;
+    ServerList.OnDrawItem := nil;
+    FillServerListCustom;
+  end
+  else
+  begin
+    Port.Enabled := False;
+    Port.NumbersOnly := False;
+    ServerList.Style := csOwnerDrawFixed;
+    ServerList.OnDrawItem := ServerListDrawItem;
+
+    if FBDType = bdMSSQL then
+      FillServerListMS
+    else
+    if FBDType = bdSybase then
+      FillServerListSyb
+    else
+    if FBDType = bdPostgreSQL then
+      FillServerListCustom
+    else
+    if FBDType = bdODBC then
+    begin
+      FillODBCSources;
+      OkAction.OnUpdate := nil;
+    end;
+  end;
+end;
+
+procedure TBDLoginForm.FillServerListCustom;
+var
+  Options: TOptionsReg;
+  Servers : TStringList;
+  i,j,FPort: integer;
+  S,FServer: string;
+begin
+  Options := TOptionsReg.Create;
+
+  try
+    Servers := Options.GetConnectToList(FBDType);
+    if Servers.Count = 0 then Exit;
+
+    for i := 0 to Servers.Count - 1 do
+    begin
+      S := Servers[i]; //eisrko,5432
+      j := Pos(',',S);
+      if j > 0 then
+      begin
+        FPort := StrToInt(Copy(S,j+1,MaxInt));
+        FServer := Copy(S,1,j-1);
+        ServerList.AddItem(FServer,Pointer(FPort));
+      end;
+    end;
+  finally
+    Options.Free;
+    Servers.Free;
+    if ServerList.Items.Count > 0 then
+    begin
+      ServerList.ItemIndex := 0;
+      ServerListChange(ServerList);
+    end;
   end;
 end;
 
@@ -221,7 +352,7 @@ procedure TBDLoginForm.FillServerListSyb;
     Vars.Clear;
     s := '';
     Done := FALSE;
-    ptr := Winapi.Windows.GetEnvironmentStrings;
+    ptr := windows.GetEnvironmentStrings;
     while Done = false do begin
       if ptr^ = #0 then begin
         inc(ptr);
@@ -293,26 +424,24 @@ begin
     end;
   finally
     Strings.Free;
-    if ServerList.Items.Count > 0 then ServerList.ItemIndex := 0;
+    if ServerList.Items.Count > 0 then
+    begin
+      ServerList.ItemIndex := 0;
+      ServerListChange(ServerList);
+    end;
   end;
 end;
 
-procedure TBDLoginForm.FormActivate(Sender: TObject);
+procedure TBDLoginForm.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
 begin
   inherited;
-  Caption := constLoginBDCaption + constLoginBDCaptionArray[FBDType];
-  SLabel.Caption := constDSBDCaptionArray[FBDType];
-  ServerList.Clear;
-  if FBDType = bdMSSQL then
-    FillServerListMS
-  else
-  if FBDType = bdSybase then
-    FillServerListSyb
-  else
+  if Key = VK_RETURN then
   begin
-    FillODBCSources;
-    OkAction.OnUpdate := nil;
+    OkAction.Update;
+    if OkAction.Enabled then OkBtn.Click;
   end;
+  if Key = VK_ESCAPE then CancelBtn.Click;
 end;
 
 procedure TBDLoginForm.Get(var aDataSource, aServer, aPort, aLogin,
@@ -339,12 +468,44 @@ begin
   end;
 end;
 
-procedure TBDLoginForm.PasswordKeyDown(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
+procedure TBDLoginForm.SaveCurrentDataSourceToRegistry;
+var
+  Options: TOptionsReg;
+begin
+  if cbCustom.Checked then
+  begin
+    Options := TOptionsReg.Create;
+    try
+      Options.SaveConnectToString(FBDType,ServerList.Text,ServerList.Text+','+Port.Text);
+    finally
+      Options.Free;
+    end;
+  end;
+end;
+
+procedure TBDLoginForm.ServerListChange(Sender: TObject);
+var
+  S: string;
+  iPos,iIndex: Integer;
 begin
   inherited;
-  if Key = VK_RETURN then OkBtn.Click;
-  if Key = VK_ESCAPE then CancelBtn.Click;
+  iIndex := (Sender as TComboBox).ItemIndex;
+  if iIndex>=0 then
+  begin
+    S := (Sender as TComboBox).Items[iIndex];
+    iPos := Pos('|Port=',S);
+    if iPos > 0 then
+    begin
+      S := Copy(S,iPos+6,MaxInt);
+      Port.Text := S;
+    end
+    else
+    begin
+      iPos := Integer((Sender as TComboBox).Items.Objects[iIndex]);
+      if iPos > 0 then
+        Port.Text := IntToStr(iPos);
+    end;
+  end;
 end;
 
 procedure TBDLoginForm.ServerListDrawItem(Control: TWinControl; Index: Integer;
@@ -382,13 +543,6 @@ begin
   end;
 end;
 
-procedure TBDLoginForm.LoginKeyDown(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
-begin
-  inherited;
-  if Key = VK_ESCAPE then CancelBtn.Click;
-end;
-
 procedure TBDLoginForm.OkActionExecute(Sender: TObject);
 begin
   OkBtn.Enabled := False;
@@ -398,7 +552,15 @@ end;
 procedure TBDLoginForm.OkActionUpdate(Sender: TObject);
 begin
   OkAction.Enabled := (Login.Text <> '') and
-                     (Password.Text  <> '');
+                     (Password.Text  <> '') and
+                     (Port.Text  <> '') and
+                     (ServerList.Text <> '');
+end;
+
+procedure TBDLoginForm.OkPanelClick(Sender: TObject);
+begin
+  OkAction.Update;
+  if OkAction.Enabled then OkBtn.Click;
 end;
 
 end.

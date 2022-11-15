@@ -3,8 +3,8 @@ unit ExtScrollingWinControlUnit;
 interface
 
 uses Messages, Windows, SysUtils, Classes, Graphics, Menus, Imm, Controls,
-  ActnList, MultiMon, Dialogs, HelpIntfs, ExtCtrls, StdCtrls, Forms, Grids;
-
+  ActnList, MultiMon, Dialogs, HelpIntfs, ExtCtrls, StdCtrls, Forms, Grids,
+  Vcl.WinXCtrls;
 
 type
 
@@ -128,6 +128,7 @@ type
     FBorderStyle: TBorderStyle;
     FDescription: string;
     FConnectionString: string;
+    FController: TPanel;
     procedure SetBorderStyle(Value: TBorderStyle);
     procedure WMNCHitTest(var Message: TMessage); message WM_NCHITTEST;
     procedure CMCtl3DChanged(var Message: TMessage); message CM_CTL3DCHANGED;
@@ -135,8 +136,10 @@ type
     procedure CreateParams(var Params: TCreateParams); override;
   public
     constructor Create(AOwner: TComponent); override;
+    procedure ClearComponents;
     property Description: string read FDescription write FDescription;
     property ConnectionString: string read FConnectionString write FConnectionString;
+    property Controller: TPanel read FController write FController;
   published
     property Align;
     property Anchors;
@@ -601,7 +604,7 @@ var
     if Size > 0 then
       FlatSB_SetScrollProp(FControl.Handle, Props[Kind, pkSize], Size, False);
     FlatSB_SetScrollProp(FControl.Handle, Props[Kind, pkBkColor],
-      ColorToRGB(Color), False);
+      ColorToRGB(clBtnFace), False);
   end;
 
 begin
@@ -624,7 +627,7 @@ begin
   ScrollInfo.nTrackPos := FPosition;
   UpdateScrollProperties(FUpdateNeeded);
   FUpdateNeeded := False;
-
+  {1: Внесенные изменения}
   //if Code = SB_HORZ then
   FlatSB_SetScrollInfo(FControl.Handle, Code, ScrollInfo, True);
   SetPosition(FPosition);
@@ -945,7 +948,7 @@ begin
     csSetCaption, csDoubleClicks];
   Width := 101;
   Height := 41;
-  FBorderStyle := bsSingle;
+  FBorderStyle := bsNone;
   HorzScrollBar.Visible := True;
   VertScrollBar.Visible := True;
 end;
@@ -978,6 +981,23 @@ end;
 procedure TExScrollBox.WMNCHitTest(var Message: TMessage);
 begin
   DefaultHandler(Message);
+end;
+
+procedure TExScrollBox.ClearComponents;
+var
+  i: integer;
+  Temp: TComponent;
+begin
+  for i := ControlCount - 1 downto 0 do
+  begin
+    Temp := Controls[i];
+    if (Temp is TStringGrid) or (Temp is TButton) or (Temp is TActivityIndicator) then
+    begin
+      RemoveComponent(Temp);
+      Temp.Free;
+    end;
+  end;
+
 end;
 
 procedure TExScrollBox.CMCtl3DChanged(var Message: TMessage);

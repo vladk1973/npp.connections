@@ -58,7 +58,7 @@ type
 
 implementation
 
-uses Winapi.ActiveX, plugin;
+uses Winapi.ActiveX, ConstUnit;
 
 { TSimpleThread }
 

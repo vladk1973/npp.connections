@@ -10,30 +10,38 @@ library npp.connections;
   with your DLL. To avoid using BORLNDMM.DLL, pass string information
   using PChar or ShortString parameters. }
 
+{$R *.dres}
+
 uses
   Windows,
   Messages,
+  Vcl.Forms,
+  Vcl.Themes,
+  Vcl.Styles,
   System.SysUtils,
   System.Classes,
-  nppplugin in 'lib\nppplugin.pas',
-  SciSupport in 'lib\SciSupport.pas',
-  plugin in 'plugin.pas',
+  ConstUnit in 'ConstUnit.pas',
+  Easy.diaplugin in 'Easy.diaplugin.pas',
   ThreadUnit in 'ThreadUnit.pas',
-  NppForms in 'lib\NppForms.pas' {NppForm},
-  NppDockingForms in 'lib\NppDockingForms.pas' {NppDockingForm},
-  connectionFormUnit in 'connectionFormUnit.pas' {connectionForm},
+  logFormUnit in 'logFormUnit.pas' {logForm},
   SqlThreadUnit in 'SqlThreadUnit.pas',
   StringGridsUnit in 'StringGridsUnit.pas',
   StringGridExUnit in 'StringGridExUnit.pas',
   ExtScrollingWinControlUnit in 'ExtScrollingWinControlUnit.pas',
   BDLoginUnit in 'BDLoginUnit.pas' {BDLoginForm},
-  connectionFormHelpersUnit in 'connectionFormHelpersUnit.pas',
-  TreeViewExUnit in 'TreeViewExUnit.pas';
+  LogFormHelpersUnit in 'LogFormHelpersUnit.pas',
+  TreeViewExUnit in 'TreeViewExUnit.pas',
+  NppDockingForms in 'lib\NppDockingForms.pas' {NppDockingForm},
+  NppForms in 'lib\NppForms.pas' {NppForm},
+  nppplugin in 'lib\nppplugin.pas',
+  SciSupport in 'lib\SciSupport.pas',
+  regUnit in 'regUnit.pas',
+  CustomDialogUnit in 'CustomDialogUnit.pas' {CustomDialogForm},
+  TranslateComponentsUnit in 'TranslateComponentsUnit.pas';
 
 {$R *.res}
-{$R npp.connections.resource.RES}
 
-{$Include 'lib\NppPluginInclude.pas'}
+{$Include 'NppPluginInclude.pas'}
 
 begin
   { First, assign the procedure to the DLLProc variable }
