@@ -189,7 +189,6 @@ begin
   ServerList.AddItem(cnstNothing,Pointer(1));
   ServerList.ItemIndex := 0;
   ServerList.Enabled := False;
-  OkBtn.Enabled := False;
 end;
 
 procedure TBDLoginForm.FillODBCSources;
@@ -281,6 +280,7 @@ begin
     Port.NumbersOnly := True;
     ServerList.Style := csDropDown;
     ServerList.OnDrawItem := nil;
+    ServerList.Enabled := True;
     FillServerListCustom;
   end
   else
